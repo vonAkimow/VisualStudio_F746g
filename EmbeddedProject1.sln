@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30002.166
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDRAM_Linker", "SDRAM_Linker.vcxproj", "{4754023E-063F-4267-8D68-6BD9CA94BB1A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|VisualGDB = Debug|VisualGDB
+		Release|VisualGDB = Release|VisualGDB
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4754023E-063F-4267-8D68-6BD9CA94BB1A}.Debug|VisualGDB.ActiveCfg = Debug|VisualGDB
+		{4754023E-063F-4267-8D68-6BD9CA94BB1A}.Debug|VisualGDB.Build.0 = Debug|VisualGDB
+		{4754023E-063F-4267-8D68-6BD9CA94BB1A}.Release|VisualGDB.ActiveCfg = Release|VisualGDB
+		{4754023E-063F-4267-8D68-6BD9CA94BB1A}.Release|VisualGDB.Build.0 = Release|VisualGDB
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3753C9AA-DF10-42DC-A65A-7885DBA4157D}
+	EndGlobalSection
+EndGlobal
