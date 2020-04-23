@@ -66,8 +66,7 @@ PNG_Properties Image[IMAGE_COUNT]; /*объявление массива стр�
 
 uint8_t sect[4096];//буфер 4кБ для считывания картинки с карты памяти
 uint8_t* bmp1;
-uint8_t* framebuffer;
-uint16_t i,j;
+
 char FileSize[25] ={0};//размер считываемого файла
 /* USER CODE END PV */
 
@@ -129,13 +128,12 @@ int main(void)
   MX_FATFS_Init();
   MX_DMA2D_Init();
   MX_USART1_UART_Init();
-	
   /* USER CODE BEGIN 2 */
     MT48LC4M32B2_Init(&hsdram1);
-	framebuffer = (uint8_t*)malloc(1023000*sizeof(uint8_t));//выделили память под фрэймбуфер
-	bmp1 = (uint8_t*)malloc(600000*sizeof(uint8_t));//выделили память под bmp картинку
+	//framebuffer = (uint8_t*)malloc(1048576*sizeof(uint8_t));//выделили память под фрэймбуфер
 	
-	HAL_LTDC_SetAddress(&hltdc, (uint32_t )framebuffer, 0); //задали адрес фрэймбуфера
+	
+	//HAL_LTDC_SetAddress(&hltdc, (uint32_t )framebuffer, 0); //задали адрес фрэймбуфера
     
 
 	if(f_mount(&SDFatFs, "0", 0) != FR_OK)
@@ -148,54 +146,64 @@ int main(void)
 		HAL_UART_Transmit(&huart1,(uint8_t*)"Disk Mount - OK!\n",17,500); 
 		
     }
-
+	//HAL_LTDC_SetAddress(&hltdc,0xC0000000, 0);
 	TFT_FillScreen(LCD_COLOR_WHITE);
-#if 0
-	OpenBMP(bmp1,"MACH1.bmp");
+	
+	bmp1 = (uint8_t*)malloc(600000*sizeof(uint8_t)); //выделили память под bmp картинку
+	OpenBMP(bmp1,"SLZ.bmp");
 	TFT_DrawBitmap(0, 0, bmp1);
-	TFT_SetFont(&Font24);
-	TFT_SetColor(LCD_COLOR_LIGHTRED);
-	TFT_DisplayString(350,75,(uint8_t*)"SDRAM",LEFT_MODE);
-#endif		
+	//TFT_SetFont(&Font24);
+	//TFT_SetColor(LCD_COLOR_RED);
+	//TFT_DisplayString(350,75,(uint8_t*)"SDRAM",LEFT_MODE);
+    free(bmp1);
 	uint8_t* png_buffer = (uint8_t*)malloc(100000 * sizeof(uint8_t));
 	Image[0].size = OpenPNG(png_buffer, "UP.png");
 	Image[0].error = lodepng_decode32(&Image[0].storage, &Image[0].width, &Image[0].height, png_buffer, Image[0].size);
 	if (Image[0].error) printf("error %u: %s\n", Image[0].error, lodepng_error_text(Image[0].error));
+#if 0
 	Image[1].size = OpenPNG(png_buffer, "DOWN.png");
 	Image[1].error = lodepng_decode32(&Image[1].storage, &Image[1].width, &Image[1].height, png_buffer, Image[1].size);
 	if (Image[1].error) printf("error %u: %s\n", Image[1].error, lodepng_error_text(Image[1].error));
+#endif	
 	free(png_buffer);
-	//TFT_DrawRawPicture(10, 0, Image[0].width, Image[0].height, Image[0].storage, 0);
-	//free(Image[0].storage);
+	
+	//TFT_DrawRawPicture(10, 0, Image[1].width, Image[1].height, Image[1].storage, 0);
+	TFT_DrawRawPicture(180, 0, Image[0].width, Image[0].height, Image[0].storage, 0);
+	//pLayerCfg.FBStartAdress = (uint32_t)Image[0].storage;
+	
+	free(Image[0].storage);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  for (uint16_t j = 272; j > 0; j -= 2) {
+#if 0
+	  for (uint16_t j = 272; j > 0; j -= 8) {
 			
 		  TFT_DrawRawPicture(100, j, Image[0].width, Image[0].height, Image[0].storage, 0);		
-		  HAL_Delay(5);			
+		  HAL_Delay(25);			
 	  }		
-	  for (uint16_t z = 0; z < 272; z += 2) {
+	  for (uint16_t z = 0; z < 272; z += 8) {
 			
 		  TFT_DrawRawPicture(100, z, Image[1].width, Image[1].height, Image[1].storage, 0);
-		  HAL_Delay(5);
+		  HAL_Delay(25);
 			
 	  }
+#endif
 		HAL_GPIO_TogglePin(GPIOI,GLED_PIN_Pin);
 				
 		HAL_Delay(250);
   }
-} 
+ 
 			
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   
   /* USER CODE END 3 */
-
+}
 
 /**
   * @brief System Clock Configuration
@@ -220,7 +228,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLM = 25;
   RCC_OscInitStruct.PLL.PLLN = 400;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 8;
+  RCC_OscInitStruct.PLL.PLLQ = 2;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -246,12 +254,12 @@ void SystemClock_Config(void)
   }
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC|RCC_PERIPHCLK_USART1
                               |RCC_PERIPHCLK_SDMMC1|RCC_PERIPHCLK_CLK48;
-  PeriphClkInitStruct.PLLSAI.PLLSAIN = 192;
-  PeriphClkInitStruct.PLLSAI.PLLSAIR = 3;
+  PeriphClkInitStruct.PLLSAI.PLLSAIN = 100;
+  PeriphClkInitStruct.PLLSAI.PLLSAIR = 4;
   PeriphClkInitStruct.PLLSAI.PLLSAIQ = 2;
-  PeriphClkInitStruct.PLLSAI.PLLSAIP = RCC_PLLSAIP_DIV4;
+  PeriphClkInitStruct.PLLSAI.PLLSAIP = RCC_PLLSAIP_DIV2;
   PeriphClkInitStruct.PLLSAIDivQ = 1;
-  PeriphClkInitStruct.PLLSAIDivR = RCC_PLLSAIDIVR_4;
+  PeriphClkInitStruct.PLLSAIDivR = RCC_PLLSAIDIVR_2;
   PeriphClkInitStruct.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2;
   PeriphClkInitStruct.Clk48ClockSelection = RCC_CLK48SOURCE_PLLSAIP;
   PeriphClkInitStruct.Sdmmc1ClockSelection = RCC_SDMMC1CLKSOURCE_CLK48;
@@ -264,9 +272,10 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 static uint32_t OpenPNG(uint8_t *ptr, const char* fname)/*запись файла из карты по адресу ptr*/
 {
+	
 	uint8_t sector[4096]; /*буфер 4кБ для считывания картинки с карты памяти */
 	uint32_t  size = 0, i1 = 0, ind1 = 0, pngsize = 0;
-	const char PNGsign[7] = "504e47\n"; /* подпись png файла*/
+	const char PNGsign[8] = "504e47\n"; /* подпись png файла*/
 	char Sign[7] = { 0 };
 	char FileSize[25] = { 0 }; /* размер считываемого файла */
 	
@@ -279,7 +288,7 @@ static uint32_t OpenPNG(uint8_t *ptr, const char* fname)/*запись файл�
 	{
 		size = (uint32_t)f_size(&MyFile);
 		pngsize = size;
-		sprintf(FileSize, "PNG size: %d B\n", size); //находим размер открытого файла и преобразуем его в char
+		sprintf(FileSize, "PNG size: %lu B\n", size); //находим размер открытого файла и преобразуем его в char
 		HAL_UART_Transmit(&huart1, (uint8_t*)"\nOpen Image - OK!\n", 18, 1000); //картинка успешно открыта
 		HAL_UART_Transmit(&huart1, (uint8_t*)FileSize, 18, 1000);
 		if (f_read(&MyFile, sector, 4, (UINT *)bytesread) != FR_OK)//проверяем, соответствует ли сигнатура файла PNG
@@ -391,6 +400,21 @@ void MPU_Config(void)
   MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
   MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
   MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_ENABLE;
+  MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
+  MPU_InitStruct.IsCacheable = MPU_ACCESS_CACHEABLE;
+  MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;
+
+  HAL_MPU_ConfigRegion(&MPU_InitStruct);
+  /** Initializes and configures the Region and the memory to be protected 
+  */
+  MPU_InitStruct.Enable = MPU_REGION_ENABLE;
+  MPU_InitStruct.Number = MPU_REGION_NUMBER1;
+  MPU_InitStruct.BaseAddress = 0xC0000000;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_2MB;
+  MPU_InitStruct.SubRegionDisable = 0x0;
+  MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
+  MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;
+  MPU_InitStruct.DisableExec = MPU_INSTRUCTION_ACCESS_DISABLE;
   MPU_InitStruct.IsShareable = MPU_ACCESS_NOT_SHAREABLE;
   MPU_InitStruct.IsCacheable = MPU_ACCESS_CACHEABLE;
   MPU_InitStruct.IsBufferable = MPU_ACCESS_BUFFERABLE;

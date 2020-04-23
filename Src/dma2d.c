@@ -43,7 +43,7 @@ void MX_DMA2D_Init(void)
   hdma2d.LayerCfg[0].AlphaMode = DMA2D_REPLACE_ALPHA;
   hdma2d.LayerCfg[0].InputAlpha = 0;
  // hdma2d.LayerCfg[0].AlphaInverted = DMA2D_REGULAR_ALPHA;
-  //hdma2d.LayerCfg[0].RedBlueSwap = DMA2D_RB_REGULAR;
+ // hdma2d.LayerCfg[0].RedBlueSwap = DMA2D_RB_REGULAR;
   if (HAL_DMA2D_Init(&hdma2d) != HAL_OK)
   {
     Error_Handler();

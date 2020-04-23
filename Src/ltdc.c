@@ -49,9 +49,9 @@ void MX_LTDC_Init(void)
   hltdc.Init.AccumulatedActiveH = 283;
   hltdc.Init.TotalWidth = 565;
   hltdc.Init.TotalHeigh = 285;
-  hltdc.Init.Backcolor.Blue = 0x00;
-	hltdc.Init.Backcolor.Green = 0x00;
-	hltdc.Init.Backcolor.Red = 0x00;
+  hltdc.Init.Backcolor.Blue = 0;
+  hltdc.Init.Backcolor.Green = 0;
+  hltdc.Init.Backcolor.Red = 0;
   if (HAL_LTDC_Init(&hltdc) != HAL_OK)
   {
     Error_Handler();
@@ -65,7 +65,7 @@ void MX_LTDC_Init(void)
   pLayerCfg.Alpha0 = 0;
   pLayerCfg.BlendingFactor1 = LTDC_BLENDING_FACTOR1_PAxCA;
   pLayerCfg.BlendingFactor2 = LTDC_BLENDING_FACTOR2_PAxCA;
-  pLayerCfg.FBStartAdress = 0;
+  pLayerCfg.FBStartAdress = 0xC0000000;
   pLayerCfg.ImageWidth = 480;
   pLayerCfg.ImageHeight = 272;
   pLayerCfg.Backcolor.Blue = 0;
@@ -681,3 +681,4 @@ void TFT_DisplayString(uint16_t X, uint16_t Y, uint8_t* Text, Text_AlignModeTypd
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+
