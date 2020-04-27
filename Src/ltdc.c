@@ -34,6 +34,7 @@ LTDC_HandleTypeDef hltdc;
 void MX_LTDC_Init(void)
 {
   LTDC_LayerCfgTypeDef pLayerCfg = {0};
+  LTDC_LayerCfgTypeDef pLayerCfg1 = {0};
 
   hltdc.Instance = LTDC;
   hltdc.Init.HSPolarity = LTDC_HSPOLARITY_AL;
@@ -64,13 +65,32 @@ void MX_LTDC_Init(void)
   pLayerCfg.Alpha0 = 0;
   pLayerCfg.BlendingFactor1 = LTDC_BLENDING_FACTOR1_PAxCA;
   pLayerCfg.BlendingFactor2 = LTDC_BLENDING_FACTOR2_PAxCA;
-  pLayerCfg.FBStartAdress = 0xC0000000;
+  pLayerCfg.FBStartAdress = 0xC0200000;
   pLayerCfg.ImageWidth = 480;
   pLayerCfg.ImageHeight = 272;
   pLayerCfg.Backcolor.Blue = 0;
   pLayerCfg.Backcolor.Green = 0;
   pLayerCfg.Backcolor.Red = 0;
   if (HAL_LTDC_ConfigLayer(&hltdc, &pLayerCfg, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  pLayerCfg1.WindowX0 = 0;
+  pLayerCfg1.WindowX1 = 480;
+  pLayerCfg1.WindowY0 = 0;
+  pLayerCfg1.WindowY1 = 272;
+  pLayerCfg1.PixelFormat = LTDC_PIXEL_FORMAT_ARGB8888;
+  pLayerCfg1.Alpha = 255;
+  pLayerCfg1.Alpha0 = 0;
+  pLayerCfg1.BlendingFactor1 = LTDC_BLENDING_FACTOR1_PAxCA;
+  pLayerCfg1.BlendingFactor2 = LTDC_BLENDING_FACTOR2_PAxCA;
+  pLayerCfg1.FBStartAdress = 0xC0000000;
+  pLayerCfg1.ImageWidth = 480;
+  pLayerCfg1.ImageHeight = 272;
+  pLayerCfg1.Backcolor.Blue = 0;
+  pLayerCfg1.Backcolor.Green = 0;
+  pLayerCfg1.Backcolor.Red = 0;
+  if (HAL_LTDC_ConfigLayer(&hltdc, &pLayerCfg1, 1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -231,17 +251,17 @@ void HAL_LTDC_MspDeInit(LTDC_HandleTypeDef* ltdcHandle)
 } 
 
 /* USER CODE BEGIN 1 */
-void TFT_FillScreen(uint32_t color)
+void TFT_FillScreen(uint32_t color, uint8_t layer)
 {
-	uint32_t n = hltdc.LayerCfg[0].ImageHeight*hltdc.LayerCfg[0].ImageWidth;
+	uint32_t n = hltdc.LayerCfg[layer].ImageHeight*hltdc.LayerCfg[layer].ImageWidth;
 	
 	for (uint32_t i = 0; i < n; i++)
 	{
-		*(__IO uint32_t*)(hltdc.LayerCfg[0].FBStartAdress + (4*i)) = color;
+		*(__IO uint32_t*)(hltdc.LayerCfg[layer].FBStartAdress + (4*i)) = color;
 	}
 }
 
-void TFT_FillRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t color)
+void TFT_FillRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t color, uint8_t layer)
 {
   
 	uint32_t xpos, ypos;
@@ -253,7 +273,7 @@ void TFT_FillRectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint3
 	{
 		for (xpos = x1; xpos <= x2; xpos++)
 		{
-			*(__IO uint32_t*)(hltdc.LayerCfg[0].FBStartAdress + (4*(ypos*hltdc.LayerCfg[0].ImageWidth + xpos))) = color;
+			*(__IO uint32_t*)(hltdc.LayerCfg[layer].FBStartAdress + (4*(ypos*hltdc.LayerCfg[layer].ImageWidth + xpos))) = color;
 		}
 	}
 }
@@ -277,11 +297,11 @@ void TFT_DrawRawPicture(uint32_t Xpos, uint32_t Ypos, uint32_t width, uint32_t h
 			pbmp += width*(bit_pixel / 8);
 		}
 }
-void TFT_DrawPixel(uint16_t Xpos, uint16_t Ypos, uint32_t color)
+void TFT_DrawPixel(uint16_t Xpos, uint16_t Ypos, uint32_t color, uint8_t layer)
 {
-	*(__IO uint32_t*)(hltdc.LayerCfg[0].FBStartAdress + (4*(Ypos*hltdc.LayerCfg[0].ImageWidth + Xpos))) = color;
+	*(__IO uint32_t*)(hltdc.LayerCfg[layer].FBStartAdress + (4*(Ypos*hltdc.LayerCfg[layer].ImageWidth + Xpos))) = color;
 }
-void TFT_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t color)
+void TFT_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t color, uint8_t layer)
 {
 	int deltaX = abs(x2 - x1);
 	int deltaY = abs(y2 - y1);
@@ -291,7 +311,7 @@ void TFT_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t c
 	
 	for (;;)
 	{
-		TFT_DrawPixel(x1, y1, color);
+		TFT_DrawPixel(x1, y1, color, layer);
 		
 		if (x1 == x2 && y1 == y2)
 			break;
@@ -311,24 +331,24 @@ void TFT_DrawLine(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint32_t c
 		}
 	}
 }
-void TFT_DrawHorizontLine(uint16_t x1, uint16_t y1, uint16_t y2, uint32_t color)
+void TFT_DrawHorizontLine(uint16_t x1, uint16_t y1, uint16_t y2, uint32_t color, uint8_t layer)
 {
-	TFT_DrawLine(x1, y1, x1, y2, color);
+	TFT_DrawLine(x1, y1, x1, y2, color, layer);
 }
 
-void TFT_DrawVerticalLine(uint16_t x1, uint16_t x2, uint16_t y1, uint32_t color)
+void TFT_DrawVerticalLine(uint16_t x1, uint16_t x2, uint16_t y1, uint32_t color, uint8_t layer)
 {
-	TFT_DrawLine(x1, y1, x2, y1, color);
+	TFT_DrawLine(x1, y1, x2, y1, color, layer);
 }
-void TFT_DrawRectangle(uint16_t left, uint16_t top, uint16_t right, uint16_t bottom, uint32_t color)
+void TFT_DrawRectangle(uint16_t left, uint16_t top, uint16_t right, uint16_t bottom, uint32_t color, uint8_t layer)
 {
-	TFT_DrawLine(left, top, right, top, color);
-	TFT_DrawLine(left, bottom, right, bottom, color);
-	TFT_DrawLine(left, bottom, left, top, color);
-	TFT_DrawLine(right, bottom, right, top, color);	
+	TFT_DrawLine(left, top, right, top, color, layer);
+	TFT_DrawLine(left, bottom, right, bottom, color, layer);
+	TFT_DrawLine(left, bottom, left, top, color, layer);
+	TFT_DrawLine(right, bottom, right, top, color, layer);	
 }
 
-void TFT_DrawCircle(uint16_t x0, uint16_t y0, uint16_t radius, uint32_t color)
+void TFT_DrawCircle(uint16_t x0, uint16_t y0, uint16_t radius, uint32_t color, uint8_t layer)
 {
 	int x = 0;
 	int y = radius;
@@ -336,10 +356,10 @@ void TFT_DrawCircle(uint16_t x0, uint16_t y0, uint16_t radius, uint32_t color)
 	int error = 0;
 	while (y >= 0)
 	{
-		TFT_DrawPixel(x0 + x, y0 + y, color);
-		TFT_DrawPixel(x0 + x, y0 - y, color);
-		TFT_DrawPixel(x0 - x, y0 + y, color);
-		TFT_DrawPixel(x0 - x, y0 - y, color);
+		TFT_DrawPixel(x0 + x, y0 + y, color, layer);
+		TFT_DrawPixel(x0 + x, y0 - y, color, layer);
+		TFT_DrawPixel(x0 - x, y0 + y, color, layer);
+		TFT_DrawPixel(x0 - x, y0 - y, color, layer);
 		error = 2 * (delta + y) - 1;
 		if (delta < 0 && error <= 0)
 		{
@@ -359,7 +379,8 @@ void TFT_DrawCircle(uint16_t x0, uint16_t y0, uint16_t radius, uint32_t color)
 		--y;
 	}
 }
-void TFT_FillCircle(uint16_t x, uint16_t y, uint16_t radius, uint32_t color)
+
+void TFT_FillCircle(uint16_t x, uint16_t y, uint16_t radius, uint32_t color, uint8_t layer)
 {
 	int a_, b_, P;
 	a_ = 0;
@@ -367,8 +388,8 @@ void TFT_FillCircle(uint16_t x, uint16_t y, uint16_t radius, uint32_t color)
 	P = 1 - radius;
 	while (a_ <= b_)
 	{		
-		TFT_FillRectangle(y - a_, x - b_, y + a_, x + b_, color);
-		TFT_FillRectangle(y - b_, x - a_, y + b_, x + a_, color);
+		TFT_FillRectangle(y - a_, x - b_, y + a_, x + b_, color, layer);
+		TFT_FillRectangle(y - b_, x - a_, y + b_, x + a_, color, layer);
 		
 		if (P < 0)
 		{
@@ -383,7 +404,7 @@ void TFT_FillCircle(uint16_t x, uint16_t y, uint16_t radius, uint32_t color)
 		}
 	}
 }
-
+#if 0
 void TFT_DrawBitmap(uint32_t Xpos, uint32_t Ypos, uint8_t *pbmp)
 {
 	uint32_t address, index = 0, width = 0, height = 0, bit_pixel = 0;
@@ -554,6 +575,7 @@ void TFT_DisplayString(uint16_t X, uint16_t Y, uint8_t* Text, Text_AlignModeTypd
 		i++;
 	}
 }
+#endif 
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
