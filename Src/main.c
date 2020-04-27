@@ -146,16 +146,19 @@ int main(void)
 	HAL_UART_Transmit(&huart1,(uint8_t*)"Disk Mount - OK!\n",17,500); 	
   }
 	
-  TFT_FillScreen(LCD_COLOR_WHITE);
+  TFT_FillScreen(LCD_COLOR_RED);
   /*Выделение памяти под bmp картинку*/
+
   uint8_t* bmp_buffer = (uint8_t*)malloc(600000*sizeof(uint8_t)); 
   OpenBMP(bmp_buffer, "SLZ.bmp");
   TFT_DrawBitmap(0, 0, bmp_buffer);
+	free(bmp_buffer);
+
   TFT_SetFont(&Font24);
   TFT_SetColor(LCD_COLOR_YELLOW);
-  TFT_DisplayString(350,75,(uint8_t*)"PNGs",LEFT_MODE);
-  free(bmp_buffer);
-	
+  TFT_DisplayString(350,55,(uint8_t*)"PNGs",LEFT_MODE);
+  
+
   uint8_t* png_buffer = (uint8_t*)malloc(100000 * sizeof(uint8_t));
   Image[0].size = OpenPNG(png_buffer, "UP.png");
   Image[0].error = lodepng_decode32(&Image[0].storage, &Image[0].width,
@@ -168,7 +171,8 @@ int main(void)
 			(uint8_t*)Image[0].ErrorStr,
 			sizeof(Image[0].ErrorStr), 500); 
   }
-#if 1
+	TFT_DrawRawPicture(100, 0, Image[0].width, Image[0].height, Image[0].storage, 0);
+#if 0	
   Image[1].size = OpenPNG(png_buffer, "DOWN.png");
   Image[1].error = lodepng_decode32(&Image[1].storage, &Image[1].width, &Image[1].height, png_buffer, Image[1].size);
   if (Image[1].error)
@@ -190,7 +194,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-#if 1
+#if 0
 	  for (uint16_t j = 272; j > 0; j -= 4) {
 			
 		  TFT_DrawRawPicture(100, j, Image[0].width, Image[0].height, Image[0].storage, 0);		
@@ -266,7 +270,7 @@ void SystemClock_Config(void)
   PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_LTDC|RCC_PERIPHCLK_USART1
                               |RCC_PERIPHCLK_SDMMC1|RCC_PERIPHCLK_CLK48;
   PeriphClkInitStruct.PLLSAI.PLLSAIN = 100;
-  PeriphClkInitStruct.PLLSAI.PLLSAIR = 4;
+  PeriphClkInitStruct.PLLSAI.PLLSAIR = 5;
   PeriphClkInitStruct.PLLSAI.PLLSAIQ = 2;
   PeriphClkInitStruct.PLLSAI.PLLSAIP = RCC_PLLSAIP_DIV2;
   PeriphClkInitStruct.PLLSAIDivQ = 1;

@@ -108,7 +108,6 @@
     <ClCompile Include="Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_ltdc.c" />
     <ClCompile Include="Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_ltdc_ex.c" />
     <ClCompile Include="Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_dsi.c" />
-    <ClCompile Include="Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_dma2d.c" />
     <ClCompile Include="Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_exti.c" />
     <ClCompile Include="Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_uart.c" />
     <ClCompile Include="Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_uart_ex.c" />
@@ -162,7 +161,6 @@
     <ClInclude Include="Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal_ltdc.h" />
     <ClInclude Include="Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal_ltdc_ex.h" />
     <ClInclude Include="Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal_dsi.h" />
-    <ClInclude Include="Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal_dma2d.h" />
     <ClInclude Include="Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal_exti.h" />
     <ClInclude Include="Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal_uart.h" />
     <ClInclude Include="Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal_uart_ex.h" />

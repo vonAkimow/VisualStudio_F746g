@@ -31,9 +31,6 @@
     <Filter Include="Source files\STM32Cube HAL\LTDC">
       <UniqueIdentifier>{b5a59b56-358f-4c83-ba21-e168523c9ff0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source files\STM32Cube HAL\DMA2D">
-      <UniqueIdentifier>{94f3e3cd-0b2d-47ad-83dd-c91816991992}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source files\STM32Cube HAL\EXTI">
       <UniqueIdentifier>{5182b600-d062-49e7-be12-e44d0a5b6de4}</UniqueIdentifier>
     </Filter>
@@ -111,9 +108,6 @@
     </Filter>
     <Filter Include="Header files\STM32Cube HAL\LTDC">
       <UniqueIdentifier>{2f1ab69f-b196-4295-8099-7a48bab60543}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header files\STM32Cube HAL\DMA2D">
-      <UniqueIdentifier>{36894945-cfa1-42b6-8bec-1a1327065f79}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header files\STM32Cube HAL\EXTI">
       <UniqueIdentifier>{3bd1eacc-aba5-436a-b1d1-fdc109cf9708}</UniqueIdentifier>
@@ -233,9 +227,6 @@
     </ClCompile>
     <ClCompile Include="Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_dsi.c">
       <Filter>Source files\STM32Cube HAL\LTDC</Filter>
-    </ClCompile>
-    <ClCompile Include="Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_dma2d.c">
-      <Filter>Source files\STM32Cube HAL\DMA2D</Filter>
     </ClCompile>
     <ClCompile Include="Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_exti.c">
       <Filter>Source files\STM32Cube HAL\EXTI</Filter>
@@ -383,9 +374,6 @@
     </ClInclude>
     <ClInclude Include="Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal_dsi.h">
       <Filter>Header files\STM32Cube HAL\LTDC</Filter>
-    </ClInclude>
-    <ClInclude Include="Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal_dma2d.h">
-      <Filter>Header files\STM32Cube HAL\DMA2D</Filter>
     </ClInclude>
     <ClInclude Include="Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal_exti.h">
       <Filter>Header files\STM32Cube HAL\EXTI</Filter>

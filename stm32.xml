@@ -48,7 +48,7 @@
     <AllDependencies>
       <ProjectDependency>
         <RelativePath>SDRAM_Linker.gpdsc</RelativePath>
-        <Timestamp>132324883346370112</Timestamp>
+        <Timestamp>132324946529541263</Timestamp>
       </ProjectDependency>
     </AllDependencies>
     <RootDirectory>
@@ -132,17 +132,6 @@
                 </VirtualFileSnapshot>
                 <VirtualFileSnapshot>
                   <RelativePath>Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_dsi.c</RelativePath>
-                </VirtualFileSnapshot>
-              </Files>
-            </VirtualDirectorySnapshot>
-            <VirtualDirectorySnapshot>
-              <Name>DMA2D</Name>
-              <Files>
-                <VirtualFileSnapshot>
-                  <RelativePath>Drivers\STM32F7xx_HAL_Driver\Inc\stm32f7xx_hal_dma2d.h</RelativePath>
-                </VirtualFileSnapshot>
-                <VirtualFileSnapshot>
-                  <RelativePath>Drivers\STM32F7xx_HAL_Driver\Src\stm32f7xx_hal_dma2d.c</RelativePath>
                 </VirtualFileSnapshot>
               </Files>
             </VirtualDirectorySnapshot>
@@ -442,9 +431,6 @@
           <RelativePath>Inc\dma.h</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
-          <RelativePath>Inc\dma2d.h</RelativePath>
-        </VirtualFileSnapshot>
-        <VirtualFileSnapshot>
           <RelativePath>Inc\ffconf.h</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
@@ -482,9 +468,6 @@
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
           <RelativePath>Src\dma.c</RelativePath>
-        </VirtualFileSnapshot>
-        <VirtualFileSnapshot>
-          <RelativePath>Src\dma2d.c</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
           <RelativePath>Src\bsp_driver_sd.c</RelativePath>
