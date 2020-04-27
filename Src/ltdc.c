@@ -335,7 +335,6 @@ void TFT_DrawHorizontLine(uint16_t x1, uint16_t y1, uint16_t y2, uint32_t color,
 {
 	TFT_DrawLine(x1, y1, x1, y2, color, layer);
 }
-
 void TFT_DrawVerticalLine(uint16_t x1, uint16_t x2, uint16_t y1, uint32_t color, uint8_t layer)
 {
 	TFT_DrawLine(x1, y1, x2, y1, color, layer);
@@ -347,7 +346,6 @@ void TFT_DrawRectangle(uint16_t left, uint16_t top, uint16_t right, uint16_t bot
 	TFT_DrawLine(left, bottom, left, top, color, layer);
 	TFT_DrawLine(right, bottom, right, top, color, layer);	
 }
-
 void TFT_DrawCircle(uint16_t x0, uint16_t y0, uint16_t radius, uint32_t color, uint8_t layer)
 {
 	int x = 0;
@@ -379,7 +377,6 @@ void TFT_DrawCircle(uint16_t x0, uint16_t y0, uint16_t radius, uint32_t color, u
 		--y;
 	}
 }
-
 void TFT_FillCircle(uint16_t x, uint16_t y, uint16_t radius, uint32_t color, uint8_t layer)
 {
 	int a_, b_, P;
@@ -404,11 +401,10 @@ void TFT_FillCircle(uint16_t x, uint16_t y, uint16_t radius, uint32_t color, uin
 		}
 	}
 }
-#if 0
-void TFT_DrawBitmap(uint32_t Xpos, uint32_t Ypos, uint8_t *pbmp)
+void TFT_DrawBitmap(uint32_t Xpos, uint32_t Ypos, uint8_t *pbmp, uint8_t layer)
 {
 	uint32_t address, index = 0, width = 0, height = 0, bit_pixel = 0;
-#if 1
+
 	index = *(__IO uint16_t *)(pbmp + 10); //смещение изображения от начала файла
 	index |= (*(__IO uint16_t *)(pbmp + 12)) << 16;
 	
@@ -422,20 +418,20 @@ void TFT_DrawBitmap(uint32_t Xpos, uint32_t Ypos, uint8_t *pbmp)
 	
 	/* Read bit/pixel */
 	bit_pixel = *(uint16_t *)(pbmp + 28); //информационный заголовок, смещение 28, бит на точку
-#endif
+
 	/* Set the address */
-	address = hltdc.LayerCfg[0].FBStartAdress + (((X_SIZE*Ypos) + Xpos) * 4); // адрес начала данных будущего рисунка в памяти SDRAM
+	address = hltdc.LayerCfg[layer].FBStartAdress + (((X_SIZE*Ypos) + Xpos) * 4);  // адрес начала данных будущего рисунка в памяти SDRAM
 	
 	/* Bypass the bitmap header */
 	pbmp += (index + (width * (height - 1) * (bit_pixel / 8))); // указатель памяти на начало самого рисунка (минуем заголовок bmp)
 	
 	if ((bit_pixel / 8) == 4)//Если открыто изображение не с тем форматом 
 	{
-		TFT_FillScreen(0xFFFF0000);
+		TFT_FillScreen(0xFFFF0000, layer);
 	}
 	else if((bit_pixel / 8) == 2)//(RGB565)
 	{
-		TFT_FillScreen(0xFF00FF00);
+		TFT_FillScreen(0xFF00FF00, layer);
 	}
 	else
 	{
@@ -474,7 +470,7 @@ void TFT_SetBackColor(uint32_t color)//выбор фона вокруг симв
 {
 	TFT.BackColor = color;
 }
-void TFT_DrawChar(uint16_t x, uint16_t y, const uint8_t c)
+void TFT_DrawChar(uint16_t x, uint16_t y, const uint8_t c, uint8_t layer)
 {
 	uint32_t i = 0, j = 0;
 	const uint8_t* ch;
@@ -514,7 +510,7 @@ void TFT_DrawChar(uint16_t x, uint16_t y, const uint8_t c)
 		{
 			if (line & (1 << (width - j + offset - 1)))
 			{
-				TFT_DrawPixel(x + j, y, TFT.TextColor);
+				TFT_DrawPixel(x + j, y, TFT.TextColor, layer);
 			}
 			else
 			{
@@ -528,7 +524,7 @@ void TFT_DrawChar(uint16_t x, uint16_t y, const uint8_t c)
 		y++;
 	}
 }
-void TFT_DisplayString(uint16_t X, uint16_t Y, uint8_t* Text, Text_AlignModeTypdef Mode)
+void TFT_DisplayString(uint16_t X, uint16_t Y, uint8_t* Text, Text_AlignModeTypdef Mode, uint8_t layer)
 {
 	uint16_t ref_column = 1, i = 0;
 	uint32_t size = 0, xsize = 0;
@@ -569,13 +565,13 @@ void TFT_DisplayString(uint16_t X, uint16_t Y, uint8_t* Text, Text_AlignModeTypd
 	//Вывод символов на экран:
 	while((*Text != 0)&&((X_SIZE - (i*TFT.pFont->Width)) & 0xFFFF) >= TFT.pFont->Width)
 	{
-		TFT_DrawChar(ref_column, Y, *Text);
+		TFT_DrawChar(ref_column, Y, *Text, layer);
 		ref_column += TFT.pFont->Width;
 		Text++;
 		i++;
 	}
 }
-#endif 
+
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -146,21 +146,22 @@ int main(void)
 	HAL_UART_Transmit(&huart1,(uint8_t*)"Disk Mount - OK!\n",17,500); 	
   }
 	
-  TFT_FillScreen(LCD_COLOR_RED,0);
-  TFT_FillScreen(0x1F0000FF, 1);
-	TFT_FillCircle(100, 200, 74, LCD_COLOR_LIGHTBLUE, 1);
+  TFT_FillScreen(0,0);
+  TFT_FillScreen(0,1);
+	
   /*Выделение памяти под bmp картинку*/
-#if 0
+
   uint8_t* bmp_buffer = (uint8_t*)malloc(600000*sizeof(uint8_t)); 
   OpenBMP(bmp_buffer, "SLZ.bmp");
-  TFT_DrawBitmap(0, 0, bmp_buffer);
-	free(bmp_buffer);
+  TFT_DrawBitmap(0, 0, bmp_buffer,0);
+  free(bmp_buffer);
+	
 
   TFT_SetFont(&Font24);
   TFT_SetColor(LCD_COLOR_YELLOW);
-  TFT_DisplayString(350,55,(uint8_t*)"PNGs",LEFT_MODE);
+  TFT_DisplayString(350,55,(uint8_t*)"HELLOW!",LEFT_MODE,1);
   
-
+#if 0
   uint8_t* png_buffer = (uint8_t*)malloc(100000 * sizeof(uint8_t));
   Image[0].size = OpenPNG(png_buffer, "UP.png");
   Image[0].error = lodepng_decode32(&Image[0].storage, &Image[0].width,
