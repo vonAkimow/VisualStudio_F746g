@@ -48,7 +48,7 @@
     <AllDependencies>
       <ProjectDependency>
         <RelativePath>SDRAM_Linker.gpdsc</RelativePath>
-        <Timestamp>132321195763364201</Timestamp>
+        <Timestamp>132324883346370112</Timestamp>
       </ProjectDependency>
     </AllDependencies>
     <RootDirectory>
@@ -522,12 +522,12 @@
       <ImportedConfiguration>
         <Settings>
           <IncludeDirectories>
-            <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\Inc</string>
-            <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\Drivers\CMSIS\Include</string>
-            <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\Drivers\CMSIS\Device\ST\STM32F7xx\Include</string>
-            <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\Drivers\STM32F7xx_HAL_Driver\Inc</string>
-            <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\Drivers\STM32F7xx_HAL_Driver\Inc\Legacy</string>
-            <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\Middlewares\Third_Party\FatFs\src</string>
+            <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\VisualStudio_F746g\Inc</string>
+            <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\VisualStudio_F746g\Drivers\CMSIS\Include</string>
+            <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\VisualStudio_F746g\Drivers\CMSIS\Device\ST\STM32F7xx\Include</string>
+            <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\VisualStudio_F746g\Drivers\STM32F7xx_HAL_Driver\Inc</string>
+            <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\VisualStudio_F746g\Drivers\STM32F7xx_HAL_Driver\Inc\Legacy</string>
+            <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\VisualStudio_F746g\Middlewares\Third_Party\FatFs\src</string>
           </IncludeDirectories>
           <PreprocessorMacros>
             <string>$$com.sysprogs.bspoptions.primary_memory$$_layout</string>

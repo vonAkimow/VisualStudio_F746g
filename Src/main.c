@@ -21,7 +21,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "dma.h"
-#include "dma2d.h"
 #include "fatfs.h"
 #include "ltdc.h"
 #include "sdmmc.h"
@@ -130,7 +129,6 @@ int main(void)
   MX_FMC_Init();
   MX_SDMMC1_SD_Init();
   MX_FATFS_Init();
-  MX_DMA2D_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 	
@@ -424,7 +422,7 @@ void MPU_Config(void)
   MPU_InitStruct.Enable = MPU_REGION_ENABLE;
   MPU_InitStruct.Number = MPU_REGION_NUMBER1;
   MPU_InitStruct.BaseAddress = 0xC0000000;
-  MPU_InitStruct.Size = MPU_REGION_SIZE_2MB;
+  MPU_InitStruct.Size = MPU_REGION_SIZE_512KB;
   MPU_InitStruct.SubRegionDisable = 0x0;
   MPU_InitStruct.TypeExtField = MPU_TEX_LEVEL0;
   MPU_InitStruct.AccessPermission = MPU_REGION_FULL_ACCESS;

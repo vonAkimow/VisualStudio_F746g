@@ -55,7 +55,7 @@
       <AdditionalOptions />
       <GenerateMapFile>true</GenerateMapFile>
       <PrintMemoryUsage>true</PrintMemoryUsage>
-      <LinkerScript>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\STM32F746NGHx_FLASH.ld</LinkerScript>
+      <LinkerScript>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\VisualStudio_F746g\STM32F746NGHx_FLASH.ld</LinkerScript>
       <VerboseMode>true</VerboseMode>
     </Link>
   </ItemDefinitionGroup>
@@ -90,7 +90,6 @@
     <ClCompile Include="Src\font8.c" />
     <ClCompile Include="Src\gpio.c" />
     <ClCompile Include="Src\dma.c" />
-    <ClCompile Include="Src\dma2d.c" />
     <ClCompile Include="Src\bsp_driver_sd.c" />
     <ClCompile Include="Src\lodepng.c" />
     <ClCompile Include="Src\MT48LC4M32B2B5.c" />
@@ -140,7 +139,6 @@
     <ClInclude Include="Inc\fonts.h" />
     <ClInclude Include="Inc\gpio.h" />
     <ClInclude Include="Inc\dma.h" />
-    <ClInclude Include="Inc\dma2d.h" />
     <ClInclude Include="Inc\ffconf.h" />
     <ClInclude Include="Inc\bsp_driver_sd.h" />
     <ClInclude Include="Inc\lodepng.h" />

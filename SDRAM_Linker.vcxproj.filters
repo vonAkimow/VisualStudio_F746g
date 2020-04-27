@@ -186,9 +186,6 @@
     <ClCompile Include="Src\dma.c">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="Src\dma2d.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="Src\bsp_driver_sd.c">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -322,9 +319,6 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\dma.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Inc\dma2d.h">
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\ffconf.h">
