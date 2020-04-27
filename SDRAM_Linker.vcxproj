@@ -43,7 +43,7 @@
       <CLanguageStandard>
       </CLanguageStandard>
       <AdditionalIncludeDirectories>Inc;Drivers\CMSIS\Include;Drivers\CMSIS\Device\ST\STM32F7xx\Include;Drivers\STM32F7xx_HAL_Driver\Inc;Drivers\STM32F7xx_HAL_Driver\Inc\Legacy;Middlewares\Third_Party\FatFs\src;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>flash_layout;STM32F746xx;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG=1;flash_layout;STM32F746xx;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions />
       <CPPLanguageStandard />
       <Optimization>Og</Optimization>
@@ -64,7 +64,7 @@
       <CLanguageStandard>
       </CLanguageStandard>
       <AdditionalIncludeDirectories>Inc;Drivers\CMSIS\Include;Drivers\CMSIS\Device\ST\STM32F7xx\Include;Drivers\STM32F7xx_HAL_Driver\Inc;Drivers\STM32F7xx_HAL_Driver\Inc\Legacy;Middlewares\Third_Party\FatFs\src;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>flash_layout;STM32F746xx;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG=1;RELEASE=1;flash_layout;STM32F746xx;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions />
       <CPPLanguageStandard />
     </ClCompile>

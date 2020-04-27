@@ -55,15 +55,19 @@ typedef enum
   LEFT_MODE = 0x03 /* Left mode */
 }Text_AlignModeTypdef;
 
+	
+	
+	
 	typedef struct {
 	
 		unsigned 		width;
 		unsigned 		height;
 		unsigned 		error;
 		size_t 			size;
-		unsigned char* storage; /* Указатель на буфер, где будет храниться декодированная картинка */
+		unsigned char* storage; /* Указатель на буфер, где будет храниться декодированная картинка */		
+		char ErrorStr[15];
 	
-	}PNG_Properties;	
+}PNG_Properties;	
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
