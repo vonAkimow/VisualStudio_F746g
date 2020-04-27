@@ -56,7 +56,6 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern DMA2D_HandleTypeDef hdma2d;
 extern DMA_HandleTypeDef hdma_sdmmc1_rx;
 extern DMA_HandleTypeDef hdma_sdmmc1_tx;
 extern SD_HandleTypeDef hsd1;
@@ -241,11 +240,6 @@ void DMA2_Stream6_IRQHandler(void)
 
   /* USER CODE END DMA2_Stream6_IRQn 1 */
 }
-
-/**
-  * @brief This function handles DMA2D global interrupt.
-  */
-
 
 /* USER CODE BEGIN 1 */
 
