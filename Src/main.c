@@ -161,7 +161,7 @@ int main(void)
   TFT_SetColor(LCD_COLOR_YELLOW);
   TFT_DisplayString(350,55,(uint8_t*)"HELLOW!",LEFT_MODE,1);
   
-#if 0
+
   uint8_t* png_buffer = (uint8_t*)malloc(100000 * sizeof(uint8_t));
   Image[0].size = OpenPNG(png_buffer, "UP.png");
   Image[0].error = lodepng_decode32(&Image[0].storage, &Image[0].width,
@@ -174,8 +174,8 @@ int main(void)
 			(uint8_t*)Image[0].ErrorStr,
 			sizeof(Image[0].ErrorStr), 500); 
   }
-	TFT_DrawRawPicture(100, 0, Image[0].width, Image[0].height, Image[0].storage, 0);
-	
+	//TFT_DrawRawPicture(100, 0, Image[0].width, Image[0].height, Image[0].storage, 1);
+#if 1	
   Image[1].size = OpenPNG(png_buffer, "DOWN.png");
   Image[1].error = lodepng_decode32(&Image[1].storage, &Image[1].width, &Image[1].height, png_buffer, Image[1].size);
   if (Image[1].error)
@@ -186,9 +186,9 @@ int main(void)
 			sizeof(Image[1].ErrorStr),
 			500);
   }
-  //free(png_buffer);
+  
 #endif	
-	
+	free(png_buffer);
 	
 
   /* USER CODE END 2 */
@@ -197,15 +197,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-#if 0
+
 	  for (uint16_t j = 272; j > 0; j -= 4) {
 			
-		  TFT_DrawRawPicture(100, j, Image[0].width, Image[0].height, Image[0].storage, 0);		
-		  HAL_Delay(25);			
-	  }		
+		  TFT_DrawRawPicture(100, j, Image[0].width, Image[0].height, Image[0].storage, 1);		
+		  HAL_Delay(25);
+		  //TFT_FillScreen(0, 1);
+	  }	
+#if 1
 	  for (uint16_t z = 0; z < 272; z += 4) {
 			
-		  TFT_DrawRawPicture(100, z, Image[1].width, Image[1].height, Image[1].storage, 0);
+		  TFT_DrawRawPicture(100, z, Image[1].width, Image[1].height, Image[1].storage, 1);
 		  HAL_Delay(25);
 			
 	  }
