@@ -60,7 +60,7 @@ typedef struct
 
 /* USER CODE BEGIN PV */
 
-#define IMAGE_COUNT 2 /*Количество используемых png изображений */
+#define IMAGE_COUNT 4 /*Количество используемых png изображений */
 PNG_Properties Image[IMAGE_COUNT]; /*объявление массива структур*/
 SD sdcard;
 
@@ -80,6 +80,7 @@ static void OpenBMP(uint8_t *ptr, const char* fname);
  функция возвращает размер записанного файла*/
 static uint32_t OpenPNG(uint8_t *ptr, const char* fname);
 
+static void DecodePNG(char* filename, uint8_t imagenumber);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -147,7 +148,7 @@ int main(void)
   }
 	
   TFT_FillScreen(0,0);
-  TFT_FillScreen(0,1);
+ // TFT_FillScreen(0,1);
 	
   /*Выделение памяти под bmp картинку*/
 
@@ -155,13 +156,20 @@ int main(void)
   OpenBMP(bmp_buffer, "SLZ.bmp");
   TFT_DrawBitmap(0, 0, bmp_buffer,0);
   free(bmp_buffer);
-	
+	TFT_FillScreen(0, 1);
 
   TFT_SetFont(&Font24);
   TFT_SetColor(LCD_COLOR_YELLOW);
-  TFT_DisplayString(350,55,(uint8_t*)"HELLOW!",LEFT_MODE,1);
-  
-
+  TFT_DisplayString(375,5,(uint8_t*)"demo 1",LEFT_MODE,0);
+	TFT_SetFont(&Font20);
+	TFT_SetColor(LCD_COLOR_RED);
+	TFT_DisplayString(5, 255, (uint8_t*)"28.04.20", LEFT_MODE, 0);
+	DecodePNG("DOWN.png", 0);
+	DecodePNG("1.png", 1);
+	DecodePNG("2.png", 2);
+	DecodePNG("3.png", 3);
+	
+#if 0
   uint8_t* png_buffer = (uint8_t*)malloc(100000 * sizeof(uint8_t));
   Image[0].size = OpenPNG(png_buffer, "UP.png");
   Image[0].error = lodepng_decode32(&Image[0].storage, &Image[0].width,
@@ -175,7 +183,7 @@ int main(void)
 			sizeof(Image[0].ErrorStr), 500); 
   }
 	//TFT_DrawRawPicture(100, 0, Image[0].width, Image[0].height, Image[0].storage, 1);
-#if 1	
+	
   Image[1].size = OpenPNG(png_buffer, "DOWN.png");
   Image[1].error = lodepng_decode32(&Image[1].storage, &Image[1].width, &Image[1].height, png_buffer, Image[1].size);
   if (Image[1].error)
@@ -183,47 +191,195 @@ int main(void)
 	sprintf(Image[1].ErrorStr, "error %u: %s\n", Image[1].error, lodepng_error_text(Image[1].error));
 	HAL_UART_Transmit(&huart1,
 			(uint8_t*)Image[1].ErrorStr,
-			sizeof(Image[1].ErrorStr),
-			500);
+			sizeof(Image[1].ErrorStr), 500);
   }
-  
+	//free(png_buffer); 
 #endif	
-	free(png_buffer);
+	
 	
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	
+    uint8_t number = 3;
   while (1)
   {
-
-	  for (uint16_t j = 272; j > 0; j -= 4) {
+	  if (number == 0) number = 3;
+	  //TFT_DrawRawPicture(65, 0, Image[2].width, Image[2].height, Image[2].storage, 1);
+#if 0
+	  for (uint16_t j = 0; j < 272; j += 4) {
 			
 		  TFT_DrawRawPicture(100, j, Image[0].width, Image[0].height, Image[0].storage, 1);		
 		  HAL_Delay(25);
 		  //TFT_FillScreen(0, 1);
 	  }	
-#if 1
-	  for (uint16_t z = 0; z < 272; z += 4) {
+#endif
+	  for (uint16_t z = 0; z < 272; z += 1) {
 			
-		  TFT_DrawRawPicture(100, z, Image[1].width, Image[1].height, Image[1].storage, 1);
-		  HAL_Delay(25);
+		  TFT_DrawRawPicture(300, z, Image[0].width, Image[0].height, Image[0].storage, 1);
+		  HAL_Delay(2);
 			
 	  }
-#endif
-		HAL_GPIO_TogglePin(GPIOI,GLED_PIN_Pin);
+	  if (number == 3)
+	  {
+		  TFT_FillScreen(0, 1);
+		  TFT_DrawRawPicture(65, 0, Image[3].width, Image[3].height, Image[3].storage, 1);  
+	  }
+	  else if (number == 2)
+	  {
+		  TFT_FillScreen(0, 1);
+		  TFT_DrawRawPicture(65, 0, Image[2].width, Image[2].height, Image[2].storage, 1);   
+	  }
+	  else if (number == 1)
+	  {
+		  TFT_FillScreen(0, 1);
+		  TFT_DrawRawPicture(65, 0, Image[1].width, Image[1].height, Image[1].storage, 1);  
+	  }
+	  number--;
+		//HAL_GPIO_TogglePin(GPIOI,GLED_PIN_Pin);
 				
-		HAL_Delay(250);
+		//HAL_Delay(15);
   }
  
 			
     /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
-  
-  /* USER CODE END 3 */
 }
+    /* USER CODE BEGIN 3 */
+static void DecodePNG(char* filename, uint8_t imagenumber)
+{
+	uint8_t* png_buffer = (uint8_t*)malloc(100000 * sizeof(uint8_t));  	
+	Image[imagenumber].size = OpenPNG(png_buffer, filename);
+	Image[imagenumber].error = lodepng_decode32(&Image[imagenumber].storage,
+		&Image[imagenumber].width,
+		&Image[imagenumber].height,
+		png_buffer,
+		Image[imagenumber].size);
+	
+	if (Image[1].error)
+	{
+		sprintf(Image[imagenumber].ErrorStr, "error %u: %s\n", 
+			Image[imagenumber].error, 
+			lodepng_error_text(Image[imagenumber].error));
+		
+		HAL_UART_Transmit(&huart1,
+			(uint8_t*)Image[imagenumber].ErrorStr,
+			sizeof(Image[imagenumber].ErrorStr),
+			500);
+	}
+	free(png_buffer);		
+}
+static uint32_t OpenPNG(uint8_t *ptr, const char* fname)/*запись файла из карты по адресу ptr*/
+{
+	
+		uint8_t sector[4096]; /*буфер 4кБ для считывания картинки с карты памяти */
+		uint32_t  size = 0, i1 = 0, ind1 = 0, pngsize = 0;
+		const char PNGsign[8] = "504e47\n"; /* подпись png файла*/
+		char Sign[7] = { 0 };
+		char FileSize[25] = { 0 }; /* размер считываемого файла */
+	
+		if (f_open(&sdcard.MyFile, fname, FA_READ) != FR_OK)//открываем картинку "fname", которая лежит на SD карте
+
+		{
+			HAL_UART_Transmit(&huart1, (uint8_t*)"Error!!\n", 8, 1000);  //ошибка открытия картинки
+		}
+		else
+		{
+			size = (uint32_t)f_size(&sdcard.MyFile);
+			pngsize = size;
+			sprintf(FileSize, "PNG size: %lu B\n", size);  //находим размер открытого файла и преобразуем его в char
+			HAL_UART_Transmit(&huart1, (uint8_t*)"\nOpen Image - OK!\n", 18, 1000);  //картинка успешно открыта
+			HAL_UART_Transmit(&huart1, (uint8_t*)FileSize, 18, 1000);
+			if (f_read(&sdcard.MyFile, sector, 4, (UINT *)sdcard.bytesread) != FR_OK)//проверяем, соответствует ли сигнатура файла PNG
+			{
+				HAL_UART_Transmit(&huart1, (uint8_t*)"\nReading - ERROR!\n", 18, 1000);
+				Error_Handler();
+			}
+			else
+			{ 
+				sprintf(Sign, "%x%x%x\n", sector[1], sector[2], sector[3]);
+				if (!(strcmp(PNGsign, Sign)))//сравниваем сигнатуры открытого файла и PNG
+				{
+					HAL_UART_Transmit(&huart1, (uint8_t*)"Sign - OK!\n", 11, 1000);
+				
+				}
+				do
+				{
+					if (size < 4096)
+					{
+						i1 = size;
+					}
+					else
+					{
+						i1 = 4096;
+					}
+					size -= i1;
+					f_lseek(&sdcard.MyFile, ind1);   //перемещаем указатель чтения по файлу на ind1
+					f_read(&sdcard.MyFile, sector, i1, (UINT *)&sdcard.bytesread);    //считываем в sect i1 байт
+					memcpy((void*)(ptr + ind1), (void*)sector, i1);  //копируем i1 символов из сектора в SDRAM
+					ind1 += i1;
+				} while (size > 0);
+				HAL_UART_Transmit(&huart1, (uint8_t*)"PNG was loaded into png_buffer! \n", 33, 1000);
+				f_close(&sdcard.MyFile);
+			}
+			ind1 = 0;
+		}
+		return pngsize;
+	}	
+static void OpenBMP(uint8_t *ptr, const char* fname)
+{
+
+		uint32_t  sz = 0, i1 = 0, ind1 = 0;
+		static uint32_t bmp_addr;
+		char FileSize[25] = { 0 }; /* размер считываемого файла */
+		uint8_t sect[4096]; /*буфер 4кБ для считывания картинки с карты памяти*/
+
+		if (f_open(&sdcard.MyFile, fname, FA_READ) != FR_OK)//открываем картинку "fname", которая лежит на SD карте
+
+		{
+			HAL_UART_Transmit(&huart1, (uint8_t*)"Open Image - ERROR!\\n", 20, 1000); //ошибка открытия картинки
+		}
+
+		else
+		{
+			sz = (uint32_t)f_size(&sdcard.MyFile);
+			sprintf(FileSize, "BMP size: %lu B\n", sz); //находим размер открытого файла и преобразуем его в char
+			HAL_UART_Transmit(&huart1, (uint8_t*)"Open Image - OK!\n", 17, 1000); //картинка успешно открыта
+			HAL_UART_Transmit(&huart1, (uint8_t*)FileSize, 20, 1000);
+			if (f_read(&sdcard.MyFile, sect, 30, (UINT *)sdcard.bytesread) != FR_OK)
+			{
+				Error_Handler();
+			}
+			else
+			{
+				bmp_addr = (uint32_t)sect; //записываем данные в сектор 4 кБ
+				sz = *(uint16_t *)(bmp_addr + 2); //Прочитали 4 байта - размер файла картинки
+				sz |= (*(uint16_t *)(bmp_addr + 4)) << 16;
+		
+				do
+				{
+					if (sz < 4096)
+					{
+						i1 = sz;
+					}
+					else
+					{
+						i1 = 4096;
+					}
+					sz -= i1;
+					f_lseek(&sdcard.MyFile, ind1);  //перемещаем указатель чтения по файлу на ind1
+					f_read(&sdcard.MyFile, sect, i1, (UINT *)&sdcard.bytesread);  //считываем в sect i1 байт
+					memcpy((void*)(ptr + ind1), (void*)sect, i1); //копируем i1 символов из сектора в SDRAM
+					ind1 += i1;
+				} while (sz > 0);
+				f_close(&sdcard.MyFile);
+			}
+			ind1 = 0;
+		}
+	}
+  /* USER CODE END 3 */
+
 
 /**
   * @brief System Clock Configuration
@@ -290,115 +446,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-static uint32_t OpenPNG(uint8_t *ptr, const char* fname)/*запись файла из карты по адресу ptr*/
-{
-	
-	uint8_t sector[4096]; /*буфер 4кБ для считывания картинки с карты памяти */
-	uint32_t  size = 0, i1 = 0, ind1 = 0, pngsize = 0;
-	const char PNGsign[8] = "504e47\n"; /* подпись png файла*/
-	char Sign[7] = { 0 };
-	char FileSize[25] = { 0 }; /* размер считываемого файла */
-	
-	if (f_open(&sdcard.MyFile, fname, FA_READ) != FR_OK)//открываем картинку "fname", которая лежит на SD карте
 
-	{
-		HAL_UART_Transmit(&huart1, (uint8_t*)"Error!!\n", 8, 1000); //ошибка открытия картинки
-	}
-	else
-	{
-		size = (uint32_t)f_size(&sdcard.MyFile);
-		pngsize = size;
-		sprintf(FileSize, "PNG size: %lu B\n", size); //находим размер открытого файла и преобразуем его в char
-		HAL_UART_Transmit(&huart1, (uint8_t*)"\nOpen Image - OK!\n", 18, 1000); //картинка успешно открыта
-		HAL_UART_Transmit(&huart1, (uint8_t*)FileSize, 18, 1000);
-		if (f_read(&sdcard.MyFile, sector, 4, (UINT *)sdcard.bytesread) != FR_OK)//проверяем, соответствует ли сигнатура файла PNG
-		{
-			HAL_UART_Transmit(&huart1, (uint8_t*)"\nReading - ERROR!\n", 18, 1000);
-			Error_Handler();
-		}
-		else
-		{ 
-			sprintf(Sign, "%x%x%x\n", sector[1], sector[2], sector[3]);
-			if (!(strcmp(PNGsign, Sign)))//сравниваем сигнатуры открытого файла и PNG
-			{
-				HAL_UART_Transmit(&huart1, (uint8_t*)"Sign - OK!\n", 11, 1000);
-				
-			}
-			do
-			{
-				if (size < 4096)
-				{
-					i1 = size;
-				}
-				else
-				{
-					i1 = 4096;
-				}
-				size -= i1;
-				f_lseek(&sdcard.MyFile, ind1);  //перемещаем указатель чтения по файлу на ind1
-				f_read(&sdcard.MyFile, sector, i1, (UINT *)&sdcard.bytesread);   //считываем в sect i1 байт
-				memcpy((void*)(ptr + ind1), (void*)sector, i1); //копируем i1 символов из сектора в SDRAM
-				ind1 += i1;
-			} while (size > 0);
-			HAL_UART_Transmit(&huart1, (uint8_t*)"PNG was loaded into png_buffer! \n", 33, 1000);
-			f_close(&sdcard.MyFile);
-		}
-		ind1 = 0;
-	}
-	return pngsize;
-}	
-static void OpenBMP(uint8_t *ptr, const char* fname)
-{
-
-  uint32_t  sz = 0, i1 = 0, ind1 = 0;
-  static uint32_t bmp_addr;
-  char FileSize[25] = { 0 }; /* размер считываемого файла */
-  uint8_t sect[4096]; /*буфер 4кБ для считывания картинки с карты памяти*/
-
-	if (f_open(&sdcard.MyFile, fname, FA_READ) != FR_OK)//открываем картинку "fname", которая лежит на SD карте
-
-  {
-    HAL_UART_Transmit(&huart1,(uint8_t*)"Open Image - ERROR!\\n",20,1000);//ошибка открытия картинки
-  }
-
-  else
-  {
-	  sz = (uint32_t)f_size(&sdcard.MyFile);
-		sprintf(FileSize,"BMP size: %lu B\n",sz);//находим размер открытого файла и преобразуем его в char
-		HAL_UART_Transmit(&huart1,(uint8_t*)"Open Image - OK!\n",17,1000);//картинка успешно открыта
-		HAL_UART_Transmit(&huart1,(uint8_t*)FileSize,20,1000);
-	  if (f_read(&sdcard.MyFile, sect, 30, (UINT *)sdcard.bytesread) != FR_OK)
-    {
-			Error_Handler();
-    }
-    else
-		{
-			bmp_addr = (uint32_t)sect;//записываем данные в сектор 4 кБ
-            sz = *(uint16_t *) (bmp_addr + 2);//Прочитали 4 байта - размер файла картинки
-            sz |= (*(uint16_t *) (bmp_addr + 4)) << 16;
-		
-            do
-            {
-                if (sz < 4096)
-                {
-                    i1 = sz;
-                }
-                else
-                {
-                i1 = 4096;
-                }
-                sz -= i1;
-	            f_lseek(&sdcard.MyFile, ind1); //перемещаем указатель чтения по файлу на ind1
-                f_read(&sdcard.MyFile, sect, i1, (UINT *)&sdcard.bytesread); //считываем в sect i1 байт
-                memcpy((void*)(ptr+ind1), (void*)sect, i1);//копируем i1 символов из сектора в SDRAM
-                ind1 += i1;
-            }
-            while (sz > 0);
-			f_close(&sdcard.MyFile);
-        }
-    ind1=0;
-    }
-  }
 
 	
 /* USER CODE END 4 */
