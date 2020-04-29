@@ -60,7 +60,7 @@ typedef struct
 
 /* USER CODE BEGIN PV */
 
-#define IMAGE_COUNT 4 /*Количество используемых png изображений */
+#define IMAGE_COUNT 6 /*Количество используемых png изображений */
 PNG_Properties Image[IMAGE_COUNT]; /*объявление массива структур*/
 SD sdcard;
 
@@ -144,30 +144,37 @@ int main(void)
   }
   else
   {
-	HAL_UART_Transmit(&huart1,(uint8_t*)"Disk Mount - OK!\n",17,500); 	
+	HAL_UART_Transmit(&huart1,(uint8_t*)"Disk Mount - OK!\n",17,500);
+	  f_chdir("GIF");/*��������� ����� GIF*/
   }
 	
   TFT_FillScreen(0,0);
  // TFT_FillScreen(0,1);
 	
   /*Выделение памяти под bmp картинку*/
-
+#if 0
   uint8_t* bmp_buffer = (uint8_t*)malloc(600000*sizeof(uint8_t)); 
   OpenBMP(bmp_buffer, "SLZ.bmp");
   TFT_DrawBitmap(0, 0, bmp_buffer,0);
   free(bmp_buffer);
+#endif	
+	
 	TFT_FillScreen(0, 1);
 
   TFT_SetFont(&Font24);
   TFT_SetColor(LCD_COLOR_YELLOW);
-  TFT_DisplayString(375,5,(uint8_t*)"demo 1",LEFT_MODE,0);
-	TFT_SetFont(&Font20);
-	TFT_SetColor(LCD_COLOR_RED);
-	TFT_DisplayString(5, 255, (uint8_t*)"28.04.20", LEFT_MODE, 0);
-	DecodePNG("DOWN.png", 0);
-	DecodePNG("1.png", 1);
-	DecodePNG("2.png", 2);
-	DecodePNG("3.png", 3);
+  TFT_DisplayString(375,5,(uint8_t*)"demo 2",LEFT_MODE,0);
+  TFT_SetFont(&Font20);
+  TFT_SetColor(LCD_COLOR_RED);
+  TFT_DisplayString(5, 255, (uint8_t*)"29.04.20", LEFT_MODE, 0);
+
+
+  DecodePNG("0.png", 0);
+  DecodePNG("1.png", 1);
+  DecodePNG("2.png", 2);
+  DecodePNG("3.png", 3);
+  DecodePNG("4.png", 4);
+  DecodePNG("5.png", 5);
 	
 #if 0
   uint8_t* png_buffer = (uint8_t*)malloc(100000 * sizeof(uint8_t));
@@ -203,44 +210,21 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	
-    uint8_t number = 3;
+  
   while (1)
   {
-	  if (number == 0) number = 3;
-	  //TFT_DrawRawPicture(65, 0, Image[2].width, Image[2].height, Image[2].storage, 1);
-#if 0
-	  for (uint16_t j = 0; j < 272; j += 4) {
-			
-		  TFT_DrawRawPicture(100, j, Image[0].width, Image[0].height, Image[0].storage, 1);		
-		  HAL_Delay(25);
-		  //TFT_FillScreen(0, 1);
-	  }	
-#endif
-	  for (uint16_t z = 0; z < 272; z += 1) {
-			
-		  TFT_DrawRawPicture(300, z, Image[0].width, Image[0].height, Image[0].storage, 1);
-		  HAL_Delay(2);
-			
-	  }
-	  if (number == 3)
-	  {
-		  TFT_FillScreen(0, 1);
-		  TFT_DrawRawPicture(65, 0, Image[3].width, Image[3].height, Image[3].storage, 1);  
-	  }
-	  else if (number == 2)
-	  {
-		  TFT_FillScreen(0, 1);
-		  TFT_DrawRawPicture(65, 0, Image[2].width, Image[2].height, Image[2].storage, 1);   
-	  }
-	  else if (number == 1)
-	  {
-		  TFT_FillScreen(0, 1);
-		  TFT_DrawRawPicture(65, 0, Image[1].width, Image[1].height, Image[1].storage, 1);  
-	  }
-	  number--;
-		//HAL_GPIO_TogglePin(GPIOI,GLED_PIN_Pin);
-				
-		//HAL_Delay(15);
+	  TFT_DrawRawPicture(0, 0, Image[0].width, Image[0].height, Image[0].storage, 1);
+	  HAL_Delay(25);
+	  TFT_DrawRawPicture(0, 0, Image[1].width, Image[1].height, Image[1].storage, 1);
+	  HAL_Delay(25);
+	  TFT_DrawRawPicture(0, 0, Image[2].width, Image[2].height, Image[2].storage, 1);
+	  HAL_Delay(25);
+	  TFT_DrawRawPicture(0, 0, Image[3].width, Image[3].height, Image[3].storage, 1);
+	  HAL_Delay(25);
+	  TFT_DrawRawPicture(0, 0, Image[4].width, Image[4].height, Image[4].storage, 1);
+	  HAL_Delay(25);
+	  TFT_DrawRawPicture(0, 0, Image[5].width, Image[5].height, Image[5].storage, 1);
+	  HAL_Delay(25);
   }
  
 			
