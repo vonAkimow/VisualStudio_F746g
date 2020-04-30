@@ -42,10 +42,10 @@
 /* USER CODE BEGIN PTD */
 typedef struct
 {
-	FATFS SDFatFs; /* Объект файловой системы, который должен быть зарегистрирован*/
-	FIL MyFile; /* Структура данных объекта файла*/ 
-	FRESULT res; /* Переменная хранящая флаги, возвращаемые функциями */
-	uint32_t byteswritten; /* Счётчики записанных, считанных байт */
+	FATFS SDFatFs; 
+	FIL MyFile; 
+	FRESULT res; 
+	uint32_t byteswritten; 
 	uint32_t bytesread;
 }SD;
 /* User defined device identifier */
@@ -66,8 +66,9 @@ typedef struct
 
 /* USER CODE BEGIN PV */
 
-#define IMAGE_COUNT 2 /*Количество используемых png изображений */
-PNG_Properties Image[IMAGE_COUNT]; /*объявление массива структур*/
+
+#define PNG_COUNT 29
+PNG_PicTypedef Image[PNG_COUNT]; 
 SD sdcard;
 RGB_typedef *RGB_matrix;  
 uint8_t   _aucLine[2048];
@@ -84,12 +85,9 @@ void SystemClock_Config(void);
 static void MPU_Config(void);
 /* USER CODE BEGIN PFP */
 static uint8_t Jpeg_CallbackFunction(uint8_t* Row, uint32_t DataLength);
-
 static void OpenBMP(uint8_t *ptr, const char* fname);
-
 static uint32_t OpenPNG(uint8_t *ptr, const char* fname);
-
-static void DecodePNG(char* filename, uint8_t imagenumber);
+static uint8_t DecodePNG(char* filename, uint8_t imagenumber);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -143,10 +141,10 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 	
-	/*�?нициализация SDRAM*/
+	/*External SDRAM initialization*/
 	MT48LC4M32B2_Init(&hsdram1);
 
-	/*Монтирование диска - внешней SD карты*/
+	/*FatFS DISC MOUNTING*/
 	if (f_mount(&sdcard.SDFatFs, "0", 0) != FR_OK)
 	{
 		HAL_UART_Transmit(&huart1, (uint8_t*)"Disk Mount - ERROR!\n", 20, 500); 
@@ -154,39 +152,58 @@ int main(void)
 	}
 	else
 	{
-		HAL_UART_Transmit(&huart1, (uint8_t*)"Disk Mount - OK!\n", 17, 500);
-	  
+		HAL_UART_Transmit(&huart1, (uint8_t*)"Disk Mount - OK!\n", 17, 500);	  
 	}
 	
-	TFT_FillScreen(0, 0);
+	TFT_FillScreen(0, 0);/*Clear screen*/
 	TFT_FillScreen(0, 1);
 
-	/*Выделение памяти под bmp картинку*/
+	
 #if 0
+	/*BMP picture drawing*/
 	uint8_t* bmp_buffer = (uint8_t*)malloc(600000*sizeof(uint8_t)); 
 	OpenBMP(bmp_buffer, "SLZ.bmp");
 	TFT_DrawBitmap(0, 0, bmp_buffer, 0);
 	free(bmp_buffer);
 #endif	
-	DecodePNG("UP.png", 1);
-	TFT_DrawRawPicture(0, 0, Image[1].width, Image[1].height, Image[1].storage, 1);
 	
-	f_chdir("JPG");/*��������� ����� PNG*/
-	if(f_open(&sdcard.MyFile, "1.jpg", FA_READ) == FR_OK)
+	
+	f_chdir("JPG");/*CD to JPG directory*/
+	if (f_open(&sdcard.MyFile, "1.jpg", FA_READ) == FR_OK)
 	{
 		jpeg_decode(&sdcard.MyFile, IMAGE_WIDTH, _aucLine, Jpeg_CallbackFunction);			
 	}
+	else
+	{
+		HAL_UART_Transmit(&huart1, (uint8_t*)"JPG - ERROR\n", 12, 500);
+	}
 	
 	f_close(&sdcard.MyFile);
-
+	f_chdir("/"); /*Back to root path*/
 	
+	if (DecodePNG("R.png", 28) != 1)
+	{
+		TFT_DrawRawPicture(0, 0, Image[28].width, Image[28].height, Image[28].storage, 1);
+	}
+	else
+	{
+		HAL_UART_Transmit(&huart1, (uint8_t*)"PNG - ERROR\n", 12, 500);
+	}
+	//free(Image[1].storage);
 	TFT_SetFont(&Font24);
 	TFT_SetColor(LCD_COLOR_RED);
-	TFT_DisplayString(375, 5, (uint8_t*)"demo 4", LEFT_MODE, 1);
+	TFT_DisplayString(375, 5, (uint8_t*)"demo 3", LEFT_MODE, 1);
+	TFT_SetFont(&Font20);
+	TFT_SetColor(LCD_COLOR_YELLOW);
+	TFT_DisplayString(370, 255, (uint8_t*)"30.04.20", LEFT_MODE, 1);
 	
-	//DecodePNG("UP.png", 0);
-	//TFT_DrawRawPicture(0, 0, Image[0].width, Image[0].height, Image[0].storage, 1);
-
+	f_chdir("GIF");
+	char name[6] = { 0 };
+	for (uint8_t i = 0; i < 24; i++)/*GIF png frames decoding*/
+	{
+		sprintf(name, "%d.png", i);
+		DecodePNG(name, i);
+	}
 	
 	
 
@@ -198,8 +215,13 @@ int main(void)
   
   while(1)
 	{
-		HAL_GPIO_TogglePin(GPIOI, GLED_PIN_Pin);
-		HAL_Delay(350);
+		for (uint8_t i = 0; i < 22; i++)
+		{
+			TFT_DrawRawPicture(170, 50, Image[i].width, Image[i].height, Image[i].storage, 1);
+			HAL_Delay(35);
+			/*Future FreeRTOS Task!*/
+		}	
+		
 	}
  
 }			
@@ -207,10 +229,15 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 /*Decode PNG into Image[imagenumber].storage field of Image Structure*/
-static void DecodePNG(char* filename, uint8_t imagenumber)
+static uint8_t DecodePNG(char* filename, uint8_t imagenumber)
 {
-	uint8_t* png_buffer = (uint8_t*)malloc(100000 * sizeof(uint8_t));  	
+	uint8_t* png_buffer = (uint8_t*)malloc(100000 * sizeof(uint8_t));
+	/*Write png picture to sdram buffer and assign its size to field of Image structure*/
 	Image[imagenumber].size = OpenPNG(png_buffer, filename);
+	
+	if (Image[imagenumber].size == 1) return 1;/*OpenPNG() ERROR*/
+	
+	/*Decode png to storage field of Image structure*/
 	Image[imagenumber].error = lodepng_decode32(&Image[imagenumber].storage,
 		&Image[imagenumber].width,
 		&Image[imagenumber].height,
@@ -219,6 +246,7 @@ static void DecodePNG(char* filename, uint8_t imagenumber)
 	
 	if (Image[1].error)
 	{
+		/*DECODING ERROR*/
 		sprintf(Image[imagenumber].ErrorStr, "error %u: %s\n", 
 			Image[imagenumber].error, 
 			lodepng_error_text(Image[imagenumber].error));
@@ -228,31 +256,34 @@ static void DecodePNG(char* filename, uint8_t imagenumber)
 			sizeof(Image[imagenumber].ErrorStr),
 			500);
 	}
-	free(png_buffer);		
+	free(png_buffer);
+	return 0;
 }
 
-static uint32_t OpenPNG(uint8_t *ptr, const char* fname)/*запись файла из карты по адресу ptr*/
+/*Write png from SD card to sdram buffer, and return its size in Bytes;
+Return 1 if something goes wrong **/
+static uint32_t OpenPNG(uint8_t *ptr, const char* fname)
 {
-	
-		uint8_t sector[4096]; /*буфер 4кБ для считывания картинки с карты памяти */
+		
+		uint8_t sector[4096];
 		uint32_t  size = 0, i1 = 0, ind1 = 0, pngsize = 0;
-		const char PNGsign[8] = "504e47\n"; /* подпись png файла*/
-		char Sign[7] = { 0 };
-		char FileSize[25] = { 0 }; /* размер считываемого файла */
+		const char PNGsign[8] = "504e47\n";/*True sign of png image*/
+		char Sign[7] = { 0 };/*buffer for current sign*/
+		char FileSize[25] = { 0 };
 	
-		if (f_open(&sdcard.MyFile, fname, FA_READ) != FR_OK)//открываем картинку "fname", которая лежит на SD карте
+		if (f_open(&sdcard.MyFile, fname, FA_READ) != FR_OK)
 
 		{
-			HAL_UART_Transmit(&huart1, (uint8_t*)"Error!!\n", 8, 1000);  //ошибка открытия картинки
+			HAL_UART_Transmit(&huart1, (uint8_t*)"Error!!\n", 8, 1000);  
 		}
 		else
 		{
 			size = (uint32_t)f_size(&sdcard.MyFile);
 			pngsize = size;
-			sprintf(FileSize, "PNG size: %lu B\n", size);  //находим размер открытого файла и преобразуем его в char
-			HAL_UART_Transmit(&huart1, (uint8_t*)"\nOpen Image - OK!\n", 18, 1000);  //картинка успешно открыта
+			sprintf(FileSize, "PNG size: %lu B\n", size);  
+			HAL_UART_Transmit(&huart1, (uint8_t*)"\nOpen Image - OK!\n", 18, 1000);  
 			HAL_UART_Transmit(&huart1, (uint8_t*)FileSize, 18, 1000);
-			if (f_read(&sdcard.MyFile, sector, 4, (UINT *)sdcard.bytesread) != FR_OK)//проверяем, соответствует ли сигнатура файла PNG
+			if (f_read(&sdcard.MyFile, sector, 4, (UINT *)sdcard.bytesread) != FR_OK)
 			{
 				HAL_UART_Transmit(&huart1, (uint8_t*)"\nReading - ERROR!\n", 18, 1000);
 				Error_Handler();
@@ -260,53 +291,56 @@ static uint32_t OpenPNG(uint8_t *ptr, const char* fname)/*запись файл�
 			else
 			{ 
 				sprintf(Sign, "%x%x%x\n", sector[1], sector[2], sector[3]);
-				if (!(strcmp(PNGsign, Sign)))//сравниваем сигнатуры открытого файла и PNG
+				if (!(strcmp(PNGsign, Sign)))
 				{
 					HAL_UART_Transmit(&huart1, (uint8_t*)"Sign - OK!\n", 11, 1000);
-				
+					do
+					{
+						if (size < 4096)
+						{
+							i1 = size;
+						}
+						else
+						{
+							i1 = 4096;
+						}
+						size -= i1;
+						f_lseek(&sdcard.MyFile, ind1);   
+						f_read(&sdcard.MyFile, sector, i1, (UINT *)&sdcard.bytesread);    
+						memcpy((void*)(ptr + ind1), (void*)sector, i1);  
+						ind1 += i1;
+					} while (size > 0);
+					HAL_UART_Transmit(&huart1, (uint8_t*)"PNG was loaded into png_buffer! \n", 33, 1000);
+					f_close(&sdcard.MyFile);
 				}
-				do
+				else
 				{
-					if (size < 4096)
-					{
-						i1 = size;
-					}
-					else
-					{
-						i1 = 4096;
-					}
-					size -= i1;
-					f_lseek(&sdcard.MyFile, ind1);   //перемещаем указатель чтения по файлу на ind1
-					f_read(&sdcard.MyFile, sector, i1, (UINT *)&sdcard.bytesread);    //считываем в sect i1 байт
-					memcpy((void*)(ptr + ind1), (void*)sector, i1);  //копируем i1 символов из сектора в SDRAM
-					ind1 += i1;
-				} while (size > 0);
-				HAL_UART_Transmit(&huart1, (uint8_t*)"PNG was loaded into png_buffer! \n", 33, 1000);
-				f_close(&sdcard.MyFile);
-			}
-			ind1 = 0;
+					return 1;/*It isn't PNG file*/
+				}
+				ind1 = 0;
+			}		
 		}
-		return pngsize;
+		return pngsize;		
 	}	
 static void OpenBMP(uint8_t *ptr, const char* fname)
 {
 
 		uint32_t  sz = 0, i1 = 0, ind1 = 0;
 		static uint32_t bmp_addr;
-		char FileSize[25] = { 0 }; /* размер считываемого файла */
-		uint8_t sect[4096]; /*буфер 4кБ для считывания картинки с карты памяти*/
+		char FileSize[25] = { 0 }; 
+		uint8_t sect[4096]; 
 
-		if (f_open(&sdcard.MyFile, fname, FA_READ) != FR_OK)//открываем картинку "fname", которая лежит на SD карте
+		if (f_open(&sdcard.MyFile, fname, FA_READ) != FR_OK)
 
 		{
-			HAL_UART_Transmit(&huart1, (uint8_t*)"Open Image - ERROR!\\n", 20, 1000); //ошибка открытия картинки
+			HAL_UART_Transmit(&huart1, (uint8_t*)"Open Image - ERROR!\\n", 20, 1000); 
 		}
 
 		else
 		{
 			sz = (uint32_t)f_size(&sdcard.MyFile);
-			sprintf(FileSize, "BMP size: %lu B\n", sz); //находим размер открытого файла и преобразуем его в char
-			HAL_UART_Transmit(&huart1, (uint8_t*)"Open Image - OK!\n", 17, 1000); //картинка успешно открыта
+			sprintf(FileSize, "BMP size: %lu B\n", sz); 
+			HAL_UART_Transmit(&huart1, (uint8_t*)"Open Image - OK!\n", 17, 1000); 
 			HAL_UART_Transmit(&huart1, (uint8_t*)FileSize, 20, 1000);
 			if (f_read(&sdcard.MyFile, sect, 30, (UINT *)sdcard.bytesread) != FR_OK)
 			{
@@ -314,8 +348,8 @@ static void OpenBMP(uint8_t *ptr, const char* fname)
 			}
 			else
 			{
-				bmp_addr = (uint32_t)sect; //записываем данные в сектор 4 кБ
-				sz = *(uint16_t *)(bmp_addr + 2); //Прочитали 4 байта - размер файла картинки
+				bmp_addr = (uint32_t)sect; 
+				sz = *(uint16_t *)(bmp_addr + 2); 
 				sz |= (*(uint16_t *)(bmp_addr + 4)) << 16;
 		
 				do
@@ -329,9 +363,9 @@ static void OpenBMP(uint8_t *ptr, const char* fname)
 						i1 = 4096;
 					}
 					sz -= i1;
-					f_lseek(&sdcard.MyFile, ind1);  //перемещаем указатель чтения по файлу на ind1
-					f_read(&sdcard.MyFile, sect, i1, (UINT *)&sdcard.bytesread);  //считываем в sect i1 байт
-					memcpy((void*)(ptr + ind1), (void*)sect, i1); //копируем i1 символов из сектора в SDRAM
+					f_lseek(&sdcard.MyFile, ind1);  
+					f_read(&sdcard.MyFile, sect, i1, (UINT *)&sdcard.bytesread); 
+					memcpy((void*)(ptr + ind1), (void*)sect, i1); 
 					ind1 += i1;
 				} while (sz > 0);
 				f_close(&sdcard.MyFile);
@@ -342,21 +376,20 @@ static void OpenBMP(uint8_t *ptr, const char* fname)
 
 static uint8_t Jpeg_CallbackFunction(uint8_t* Row, uint32_t DataLength)
 {
-
+	/*DRAW JPG PICTURE ON LAYER0*/
 	RGB_matrix =  (RGB_typedef*)Row;
 	uint32_t  ARGB32Buffer[IMAGE_WIDTH];
-	uint32_t counter = 0;
    
-	for (counter = 0; counter < IMAGE_WIDTH; counter++)
+	for (uint32_t ix = 0; ix < IMAGE_WIDTH; ix++)
 	{
-		ARGB32Buffer[counter]  = (uint32_t)
+		ARGB32Buffer[ix]  = (uint32_t)
 		(
-		 ((RGB_matrix[counter].B << 16) |
-		  (RGB_matrix[counter].G << 8) |
-		  (RGB_matrix[counter].R) | 0xFF000000)
+		 ((RGB_matrix[ix].B << 16) |
+		  (RGB_matrix[ix].G << 8) |
+		  (RGB_matrix[ix].R) | 0xFF000000)
 		);
 
-		*(__IO uint32_t *)(hltdc.LayerCfg[0].FBStartAdress + (counter * 4) + (IMAGE_WIDTH * (IMAGE_HEIGHT - line_counter - 1) * 4)) = ARGB32Buffer[counter];
+		*(__IO uint32_t *)(hltdc.LayerCfg[0].FBStartAdress + (ix * 4) + (IMAGE_WIDTH * (IMAGE_HEIGHT - line_counter - 1) * 4)) = ARGB32Buffer[ix];
 	}  
 
 #ifdef SWAP_RB 

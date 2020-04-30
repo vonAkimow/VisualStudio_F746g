@@ -64,12 +64,10 @@ typedef struct RGB
 		uint8_t R;
 }RGB_typedef;
 
-	/* Exported variables --------------------------------------------------------*/
-	/* Exported constants --------------------------------------------------------*/
 #define IMAGE_HEIGHT 272
 #define IMAGE_WIDTH  480
 #define IMAGE_QUALITY 90
-#define LCD_FRAME_BUFFER 0xC0000000
+
 	
 	
 	
@@ -82,7 +80,7 @@ typedef struct RGB
 		unsigned char* storage; /* Указатель на буфер, где будет храниться декодированная картинка */		
 		char ErrorStr[15];
 	
-}PNG_Properties;	
+}PNG_PicTypedef;	
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
