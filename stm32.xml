@@ -48,7 +48,7 @@
     <AllDependencies>
       <ProjectDependency>
         <RelativePath>SDRAM_Linker.gpdsc</RelativePath>
-        <Timestamp>132324991488284888</Timestamp>
+        <Timestamp>132327070024513275</Timestamp>
       </ProjectDependency>
     </AllDependencies>
     <RootDirectory>
@@ -391,6 +391,179 @@
               </Files>
             </VirtualDirectorySnapshot>
             <VirtualDirectorySnapshot>
+              <Name>LIBJPEG</Name>
+              <Files>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\include\jconfig_template.h</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\include\jdct.h</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\include\jerror.h</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\include\jinclude.h</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\include\jmemsys.h</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\include\jmorecfg_template.h</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\include\jpegint.h</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\include\jpeglib.h</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\include\jversion.h</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\include\jdata_conf_template.h</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jcapimin.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jcapistd.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdapimin.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdapistd.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jcomapi.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jcparam.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jctrans.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdtrans.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jcinit.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jcmaster.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jcmainct.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jcprepct.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jccoefct.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jccolor.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jcsample.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jcdctmgr.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jfdctint.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jfdctfst.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jfdctflt.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jchuff.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jcarith.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jcmarker.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdatadst.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdmaster.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdinput.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdmainct.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdcoefct.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdpostct.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdmarker.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdhuff.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdarith.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jddctmgr.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jidctint.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jidctfst.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jidctflt.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdsample.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdcolor.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdmerge.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jquant1.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jquant2.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jdatasrc.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jaricom.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jerror.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jmemmgr.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jutils.c</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Middlewares\Third_Party\LibJPEG\source\jmemnobs.c</RelativePath>
+                </VirtualFileSnapshot>
+              </Files>
+            </VirtualDirectorySnapshot>
+            <VirtualDirectorySnapshot>
               <Name>FATFS</Name>
               <Files>
                 <VirtualFileSnapshot>
@@ -446,6 +619,18 @@
           <RelativePath>Inc\fmc.h</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
+          <RelativePath>Inc\libjpeg.h</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Inc\jconfig.h</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Inc\jmorecfg.h</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Inc\jdata_conf.h</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
           <RelativePath>Inc\ltdc.h</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
@@ -482,6 +667,12 @@
           <RelativePath>Src\fmc.c</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
+          <RelativePath>Src\libjpeg.c</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Src\jdata_conf.c</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
           <RelativePath>Src\ltdc.c</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
@@ -510,6 +701,7 @@
             <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\VisualStudio_F746g\Drivers\CMSIS\Device\ST\STM32F7xx\Include</string>
             <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\VisualStudio_F746g\Drivers\STM32F7xx_HAL_Driver\Inc</string>
             <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\VisualStudio_F746g\Drivers\STM32F7xx_HAL_Driver\Inc\Legacy</string>
+            <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\VisualStudio_F746g\Middlewares\Third_Party\LibJPEG\include</string>
             <string>C:\ARM\VSProjects\SDRAM_LINKER_MemManagment\VisualStudio_F746g\Middlewares\Third_Party\FatFs\src</string>
           </IncludeDirectories>
           <PreprocessorMacros>

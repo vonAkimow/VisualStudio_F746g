@@ -30,8 +30,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "MT48LC4M32B2B5.h"
+
 #include "lodepng.h"
+#include "decode.h"
+#include "jpeglib.h"
+#include "libjpeg.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,6 +48,8 @@ typedef struct
 	uint32_t byteswritten; /* Счётчики записанных, считанных байт */
 	uint32_t bytesread;
 }SD;
+/* User defined device identifier */
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -74,8 +80,10 @@ SD sdcard;
 void SystemClock_Config(void);
 static void MPU_Config(void);
 /* USER CODE BEGIN PFP */
-static void OpenBMP(uint8_t *ptr, const char* fname);
 
+
+static void OpenBMP(uint8_t *ptr, const char* fname);
+static uint32_t OpenJPG(uint8_t *sdrambuffer, const char* fname);
 /*Запись png картинки из флэш карты в sdram 
  функция возвращает размер записанного файла*/
 static uint32_t OpenPNG(uint8_t *ptr, const char* fname);
@@ -95,7 +103,8 @@ static void DecodePNG(char* filename, uint8_t imagenumber);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	
+	
   /* USER CODE END 1 */
 
   /* MPU Configuration--------------------------------------------------------*/
@@ -133,73 +142,76 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 	
-  /*�?нициализация SDRAM*/
-  MT48LC4M32B2_Init(&hsdram1);
+	/*�?нициализация SDRAM*/
+	MT48LC4M32B2_Init(&hsdram1);
 
-  /*Монтирование диска - внешней SD карты*/
-  if(f_mount(&sdcard.SDFatFs, "0", 0) != FR_OK)
-  {
-	HAL_UART_Transmit(&huart1,(uint8_t*)"Disk Mount - ERROR!\n",20,500); 
-    Error_Handler();
-  }
-  else
-  {
-	HAL_UART_Transmit(&huart1,(uint8_t*)"Disk Mount - OK!\n",17,500);
-	  f_chdir("GIF");/*��������� ����� GIF*/
-  }
+	/*Монтирование диска - внешней SD карты*/
+	if (f_mount(&sdcard.SDFatFs, "0", 0) != FR_OK)
+	{
+		HAL_UART_Transmit(&huart1, (uint8_t*)"Disk Mount - ERROR!\n", 20, 500); 
+		Error_Handler();
+	}
+	else
+	{
+		HAL_UART_Transmit(&huart1, (uint8_t*)"Disk Mount - OK!\n", 17, 500);
+	  
+	}
 	
-  TFT_FillScreen(0,0);
- // TFT_FillScreen(0,1);
-	
-  /*Выделение памяти под bmp картинку*/
-#if 0
-  uint8_t* bmp_buffer = (uint8_t*)malloc(600000*sizeof(uint8_t)); 
-  OpenBMP(bmp_buffer, "SLZ.bmp");
-  TFT_DrawBitmap(0, 0, bmp_buffer,0);
-  free(bmp_buffer);
-#endif	
-	
+	TFT_FillScreen(0, 0);
 	TFT_FillScreen(0, 1);
 
-  TFT_SetFont(&Font24);
-  TFT_SetColor(LCD_COLOR_YELLOW);
-  TFT_DisplayString(375,5,(uint8_t*)"demo 2",LEFT_MODE,0);
-  TFT_SetFont(&Font20);
-  TFT_SetColor(LCD_COLOR_RED);
-  TFT_DisplayString(5, 255, (uint8_t*)"29.04.20", LEFT_MODE, 0);
+	/*Выделение памяти под bmp картинку*/
+	#if 1
+	uint8_t* bmp_buffer = (uint8_t*)malloc(600000*sizeof(uint8_t)); 
+	OpenBMP(bmp_buffer, "SLZ.bmp");
+	TFT_DrawBitmap(0, 0, bmp_buffer, 0);
+	free(bmp_buffer);
+	#endif	
+	//uint8_t* jpg_buffer = (uint8_t*)malloc(100000*sizeof(uint8_t));
+   // const uint16_t jpgsize = OpenJPG(jpg_buffer, "J1.jpg");
+    TFT_SetFont(&Font24);
+	TFT_SetColor(LCD_COLOR_GREEN);
+	TFT_DisplayString(375, 5, (uint8_t*)"demo 4", LEFT_MODE, 0);
+	TFT_SetFont(&Font20);
+	TFT_SetColor(LCD_COLOR_RED);
 
 
-  DecodePNG("0.png", 0);
-  DecodePNG("1.png", 1);
-  DecodePNG("2.png", 2);
-  DecodePNG("3.png", 3);
-  DecodePNG("4.png", 4);
-  DecodePNG("5.png", 5);
-	
-#if 0
-  uint8_t* png_buffer = (uint8_t*)malloc(100000 * sizeof(uint8_t));
-  Image[0].size = OpenPNG(png_buffer, "UP.png");
-  Image[0].error = lodepng_decode32(&Image[0].storage, &Image[0].width,
-		&Image[0].height, png_buffer, Image[0].size);
-  /*Если произошла ошибка декодирования*/
-  if (Image[0].error) 
-  {
-	sprintf(Image[0].ErrorStr, "error %u: %s\n", Image[0].error, lodepng_error_text(Image[0].error));
-	HAL_UART_Transmit(&huart1,
+	#if 0
+	f_chdir("GIF"); /*��������� ����� GIF*/
+	DecodePNG("0.png", 0);
+	DecodePNG("1.png", 1);
+	DecodePNG("2.png", 2);
+	DecodePNG("3.png", 3);
+	DecodePNG("4.png", 4);
+	DecodePNG("5.png", 5);
+	uint8_t* png_buffer = (uint8_t*)malloc(100000 * sizeof(uint8_t));
+	Image[0].size = OpenPNG(png_buffer, "UP.png");
+	Image[0].error = lodepng_decode32(&Image[0].storage,
+		&Image[0].width,
+		&Image[0].height,
+		png_buffer,
+		Image[0].size);
+	/*Если произошла ошибка декодирования*/
+	if (Image[0].error) 
+	{
+		sprintf(Image[0].ErrorStr, "error %u: %s\n", Image[0].error, lodepng_error_text(Image[0].error));
+		HAL_UART_Transmit(&huart1,
 			(uint8_t*)Image[0].ErrorStr,
-			sizeof(Image[0].ErrorStr), 500); 
-  }
+			sizeof(Image[0].ErrorStr),
+			500); 
+	}
 	//TFT_DrawRawPicture(100, 0, Image[0].width, Image[0].height, Image[0].storage, 1);
 	
   Image[1].size = OpenPNG(png_buffer, "DOWN.png");
-  Image[1].error = lodepng_decode32(&Image[1].storage, &Image[1].width, &Image[1].height, png_buffer, Image[1].size);
-  if (Image[1].error)
-  {
-	sprintf(Image[1].ErrorStr, "error %u: %s\n", Image[1].error, lodepng_error_text(Image[1].error));
-	HAL_UART_Transmit(&huart1,
+	Image[1].error = lodepng_decode32(&Image[1].storage, &Image[1].width, &Image[1].height, png_buffer, Image[1].size);
+	if (Image[1].error)
+	{
+		sprintf(Image[1].ErrorStr, "error %u: %s\n", Image[1].error, lodepng_error_text(Image[1].error));
+		HAL_UART_Transmit(&huart1,
 			(uint8_t*)Image[1].ErrorStr,
-			sizeof(Image[1].ErrorStr), 500);
-  }
+			sizeof(Image[1].ErrorStr),
+			500);
+	}
 	//free(png_buffer); 
 #endif	
 	
@@ -211,26 +223,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	
   
-  while (1)
-  {
-	  TFT_DrawRawPicture(0, 0, Image[0].width, Image[0].height, Image[0].storage, 1);
-	  HAL_Delay(25);
-	  TFT_DrawRawPicture(0, 0, Image[1].width, Image[1].height, Image[1].storage, 1);
-	  HAL_Delay(25);
-	  TFT_DrawRawPicture(0, 0, Image[2].width, Image[2].height, Image[2].storage, 1);
-	  HAL_Delay(25);
-	  TFT_DrawRawPicture(0, 0, Image[3].width, Image[3].height, Image[3].storage, 1);
-	  HAL_Delay(25);
-	  TFT_DrawRawPicture(0, 0, Image[4].width, Image[4].height, Image[4].storage, 1);
-	  HAL_Delay(25);
-	  TFT_DrawRawPicture(0, 0, Image[5].width, Image[5].height, Image[5].storage, 1);
-	  HAL_Delay(25);
-  }
+  while(1)
+	{
+		HAL_GPIO_TogglePin(GPIOI, GLED_PIN_Pin);
+		HAL_Delay(350);
+	}
  
-			
+}			
     /* USER CODE END WHILE */
-}
+
     /* USER CODE BEGIN 3 */
+/*Decode PNG into Image[imagenumber].storage field of Image Structure*/
 static void DecodePNG(char* filename, uint8_t imagenumber)
 {
 	uint8_t* png_buffer = (uint8_t*)malloc(100000 * sizeof(uint8_t));  	
@@ -254,6 +257,56 @@ static void DecodePNG(char* filename, uint8_t imagenumber)
 	}
 	free(png_buffer);		
 }
+static uint32_t OpenJPG(uint8_t *sdrambuffer, const char* fname)/*запись файла из карты по адресу ptr*/
+{
+	
+	uint8_t sector[4096]; /*буфер 4кБ для считывания картинки с карты памяти */
+	uint32_t  size = 0, i1 = 0, ind1 = 0, pngsize = 0;
+	char FileSize[25] = { 0 }; /* размер считываемого файла */
+	
+	if (f_open(&sdcard.MyFile, fname, FA_READ) != FR_OK)//открываем картинку "fname", которая лежит на SD карте
+
+	{
+		HAL_UART_Transmit(&huart1, (uint8_t*)"Error!!\n", 8, 1000);   //ошибка открытия картинки
+	}
+	else
+	{
+		size = (uint32_t)f_size(&sdcard.MyFile);
+		pngsize = size;
+		sprintf(FileSize, "JPG size: %lu B\n", size);   //находим размер открытого файла и преобразуем его в char
+		HAL_UART_Transmit(&huart1, (uint8_t*)"\nOpen Image - OK!\n", 18, 1000);   //картинка успешно открыта
+		HAL_UART_Transmit(&huart1, (uint8_t*)FileSize, 18, 1000);
+		if (f_read(&sdcard.MyFile, sector, 4, (UINT *)sdcard.bytesread) != FR_OK)//проверяем, соответствует ли сигнатура файла PNG
+		{
+			HAL_UART_Transmit(&huart1, (uint8_t*)"\nReading - ERROR!\n", 18, 1000);
+			Error_Handler();
+		}
+		else
+		{ 
+	
+			do
+			{
+				if (size < 4096)
+				{
+					i1 = size;
+				}
+				else
+				{
+					i1 = 4096;
+				}
+				size -= i1;
+				f_lseek(&sdcard.MyFile, ind1);    //перемещаем указатель чтения по файлу на ind1
+				f_read(&sdcard.MyFile, sector, i1, (UINT *)&sdcard.bytesread);     //считываем в sect i1 байт
+				memcpy((void*)(sdrambuffer + ind1), (void*)sector, i1);   //копируем i1 символов из сектора в SDRAM
+				ind1 += i1;
+			} while (size > 0);
+			HAL_UART_Transmit(&huart1, (uint8_t*)"JPG was loaded into jpg_buffer! \n", 33, 1000);
+			f_close(&sdcard.MyFile);
+		}
+		ind1 = 0;
+	}
+	return pngsize;
+}	
 static uint32_t OpenPNG(uint8_t *ptr, const char* fname)/*запись файла из карты по адресу ptr*/
 {
 	

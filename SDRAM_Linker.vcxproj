@@ -42,7 +42,7 @@
     <ClCompile>
       <CLanguageStandard>
       </CLanguageStandard>
-      <AdditionalIncludeDirectories>Inc;Drivers\CMSIS\Include;Drivers\CMSIS\Device\ST\STM32F7xx\Include;Drivers\STM32F7xx_HAL_Driver\Inc;Drivers\STM32F7xx_HAL_Driver\Inc\Legacy;Middlewares\Third_Party\FatFs\src;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Middlewares/Third_Party/LibJPEG/include;Inc;Drivers\CMSIS\Include;Drivers\CMSIS\Device\ST\STM32F7xx\Include;Drivers\STM32F7xx_HAL_Driver\Inc;Drivers\STM32F7xx_HAL_Driver\Inc\Legacy;Middlewares\Third_Party\LibJPEG\include;Middlewares\Third_Party\FatFs\src;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG=1;flash_layout;STM32F746xx;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions />
       <CPPLanguageStandard />
@@ -63,7 +63,7 @@
     <ClCompile>
       <CLanguageStandard>
       </CLanguageStandard>
-      <AdditionalIncludeDirectories>Inc;Drivers\CMSIS\Include;Drivers\CMSIS\Device\ST\STM32F7xx\Include;Drivers\STM32F7xx_HAL_Driver\Inc;Drivers\STM32F7xx_HAL_Driver\Inc\Legacy;Middlewares\Third_Party\FatFs\src;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Inc;Drivers\CMSIS\Include;Drivers\CMSIS\Device\ST\STM32F7xx\Include;Drivers\STM32F7xx_HAL_Driver\Inc;Drivers\STM32F7xx_HAL_Driver\Inc\Legacy;Middlewares\Third_Party\LibJPEG\include;Middlewares\Third_Party\FatFs\src;%(ClCompile.AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG=1;RELEASE=1;flash_layout;STM32F746xx;%(ClCompile.PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions />
       <CPPLanguageStandard />
@@ -83,6 +83,7 @@
   </ImportGroup>
   <ItemGroup>
     <ClCompile Include="sbrk.c" />
+    <ClCompile Include="Src\decode.c" />
     <ClCompile Include="Src\font12.c" />
     <ClCompile Include="Src\font16.c" />
     <ClCompile Include="Src\font20.c" />
@@ -91,6 +92,7 @@
     <ClCompile Include="Src\gpio.c" />
     <ClCompile Include="Src\dma.c" />
     <ClCompile Include="Src\bsp_driver_sd.c" />
+    <ClCompile Include="Src\libjpeg.c" />
     <ClCompile Include="Src\lodepng.c" />
     <ClCompile Include="Src\MT48LC4M32B2B5.c" />
     <ClCompile Include="Src\sd_diskio.c" />
@@ -135,11 +137,13 @@
     <None Include="stm32.props" />
     <ClCompile Include="$(BSP_ROOT)\STM32F7xxxx\StartupFiles\startup_stm32f746xx.c" />
     <ClInclude Include="ExtraMemories.h" />
+    <ClInclude Include="Inc\decode.h" />
     <ClInclude Include="Inc\fonts.h" />
     <ClInclude Include="Inc\gpio.h" />
     <ClInclude Include="Inc\dma.h" />
     <ClInclude Include="Inc\ffconf.h" />
     <ClInclude Include="Inc\bsp_driver_sd.h" />
+    <ClInclude Include="Inc\libjpeg.h" />
     <ClInclude Include="Inc\lodepng.h" />
     <ClInclude Include="Inc\MT48LC4M32B2B5.h" />
     <ClInclude Include="Inc\sd_diskio.h" />
@@ -189,5 +193,65 @@
     <None Include="SDRAM_Linker-Debug.vgdbsettings" />
     <None Include="SDRAM_Linker-Release.vgdbsettings" />
     <None Include="stm32.xml" />
+    <ClCompile Include="Src\jdata_conf.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcapimin.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcapistd.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdapimin.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdapistd.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcomapi.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcparam.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jctrans.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdtrans.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcinit.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcmaster.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcmainct.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcprepct.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jccoefct.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jccolor.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcsample.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcdctmgr.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jfdctint.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jfdctfst.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jfdctflt.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jchuff.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcarith.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcmarker.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdatadst.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdmaster.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdinput.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdmainct.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdcoefct.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdpostct.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdmarker.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdhuff.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdarith.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jddctmgr.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jidctint.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jidctfst.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jidctflt.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdsample.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdcolor.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdmerge.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jquant1.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jquant2.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdatasrc.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jaricom.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jerror.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jmemmgr.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jutils.c" />
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jmemnobs.c" />
+    <ClInclude Include="Inc\jconfig.h" />
+    <ClInclude Include="Inc\jmorecfg.h" />
+    <ClInclude Include="Inc\jdata_conf.h" />
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jconfig_template.h" />
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jdct.h" />
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jerror.h" />
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jinclude.h" />
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jmemsys.h" />
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jmorecfg_template.h" />
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jpegint.h" />
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jpeglib.h" />
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jversion.h" />
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jdata_conf_template.h" />
   </ItemGroup>
 </Project>

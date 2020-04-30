@@ -172,6 +172,12 @@
     <Filter Include="VisualGDB settings">
       <UniqueIdentifier>{b6b5035f-5838-4a70-9d62-016cc62594e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source files\STM32Cube HAL\LIBJPEG">
+      <UniqueIdentifier>{5d1f70c4-3054-4b27-8296-5a2111efbcbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\STM32Cube HAL\LIBJPEG">
+      <UniqueIdentifier>{0f363db4-2b0a-4a7c-96a0-1265ad2889d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\gpio.c">
@@ -483,6 +489,192 @@
     <ClCompile Include="Src\lodepng.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\libjpeg.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\jdata_conf.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcapimin.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcapistd.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdapimin.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdapistd.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcomapi.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcparam.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jctrans.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdtrans.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcinit.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcmaster.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcmainct.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcprepct.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jccoefct.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jccolor.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcsample.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcdctmgr.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jfdctint.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jfdctfst.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jfdctflt.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jchuff.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcarith.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jcmarker.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdatadst.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdmaster.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdinput.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdmainct.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdcoefct.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdpostct.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdmarker.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdhuff.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdarith.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jddctmgr.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jidctint.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jidctfst.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jidctflt.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdsample.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdcolor.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdmerge.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jquant1.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jquant2.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jdatasrc.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jaricom.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jerror.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jmemmgr.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jutils.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClCompile Include="Middlewares\Third_Party\LibJPEG\source\jmemnobs.c">
+      <Filter>Source files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClCompile>
+    <ClInclude Include="Inc\jconfig.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\jmorecfg.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\jdata_conf.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jconfig_template.h">
+      <Filter>Header files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClInclude>
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jdct.h">
+      <Filter>Header files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClInclude>
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jerror.h">
+      <Filter>Header files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClInclude>
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jinclude.h">
+      <Filter>Header files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClInclude>
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jmemsys.h">
+      <Filter>Header files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClInclude>
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jmorecfg_template.h">
+      <Filter>Header files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClInclude>
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jpegint.h">
+      <Filter>Header files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClInclude>
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jpeglib.h">
+      <Filter>Header files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClInclude>
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jversion.h">
+      <Filter>Header files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClInclude>
+    <ClInclude Include="Middlewares\Third_Party\LibJPEG\include\jdata_conf_template.h">
+      <Filter>Header files\STM32Cube HAL\LIBJPEG</Filter>
+    </ClInclude>
+    <ClCompile Include="Src\decode.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\MT48LC4M32B2B5.h">
@@ -495,6 +687,12 @@
       <Filter>Header files</Filter>
     </ClInclude>
     <ClInclude Include="Inc\lodepng.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\libjpeg.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\decode.h">
       <Filter>Header files</Filter>
     </ClInclude>
   </ItemGroup>
