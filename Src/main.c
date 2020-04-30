@@ -69,7 +69,10 @@ typedef struct
 #define IMAGE_COUNT 6 /*Количество используемых png изображений */
 PNG_Properties Image[IMAGE_COUNT]; /*объявление массива структур*/
 SD sdcard;
-
+RGB_typedef *RGB_matrix;  
+uint8_t   _aucLine[2048];
+uint32_t  offset = 0;
+uint32_t line_counter = 271;
 
 
 
@@ -80,7 +83,7 @@ SD sdcard;
 void SystemClock_Config(void);
 static void MPU_Config(void);
 /* USER CODE BEGIN PFP */
-
+static uint8_t Jpeg_CallbackFunction(uint8_t* Row, uint32_t DataLength);
 
 static void OpenBMP(uint8_t *ptr, const char* fname);
 static uint32_t OpenJPG(uint8_t *sdrambuffer, const char* fname);
@@ -161,19 +164,17 @@ int main(void)
 	TFT_FillScreen(0, 1);
 
 	/*Выделение памяти под bmp картинку*/
-	#if 1
+#if 0
 	uint8_t* bmp_buffer = (uint8_t*)malloc(600000*sizeof(uint8_t)); 
 	OpenBMP(bmp_buffer, "SLZ.bmp");
 	TFT_DrawBitmap(0, 0, bmp_buffer, 0);
 	free(bmp_buffer);
-	#endif	
+	
 	//uint8_t* jpg_buffer = (uint8_t*)malloc(100000*sizeof(uint8_t));
    // const uint16_t jpgsize = OpenJPG(jpg_buffer, "J1.jpg");
-    TFT_SetFont(&Font24);
-	TFT_SetColor(LCD_COLOR_GREEN);
-	TFT_DisplayString(375, 5, (uint8_t*)"demo 4", LEFT_MODE, 0);
-	TFT_SetFont(&Font20);
-	TFT_SetColor(LCD_COLOR_RED);
+#endif	
+    
+	
 
 
 	#if 0
@@ -214,6 +215,17 @@ int main(void)
 	}
 	//free(png_buffer); 
 #endif	
+if(f_open(&sdcard.MyFile, "image.jpg", FA_READ) == FR_OK)
+	{
+		jpeg_decode(&sdcard.MyFile, IMAGE_WIDTH, _aucLine, Jpeg_CallbackFunction);			
+	}
+	
+	f_close(&sdcard.MyFile);
+	TFT_SetFont(&Font24);
+	TFT_SetColor(LCD_COLOR_RED);
+	TFT_DisplayString(375, 5, (uint8_t*)"demo 4", LEFT_MODE, 1);
+	
+
 	
 	
 
@@ -415,6 +427,43 @@ static void OpenBMP(uint8_t *ptr, const char* fname)
 			ind1 = 0;
 		}
 	}
+
+static uint8_t Jpeg_CallbackFunction(uint8_t* Row, uint32_t DataLength)
+{
+
+	RGB_matrix =  (RGB_typedef*)Row;
+	uint32_t  ARGB32Buffer[IMAGE_WIDTH];
+	uint32_t counter = 0;
+   
+	for (counter = 0; counter < IMAGE_WIDTH; counter++)
+	{
+		ARGB32Buffer[counter]  = (uint32_t)
+		(
+		 ((RGB_matrix[counter].B << 16) |
+		  (RGB_matrix[counter].G << 8) |
+		  (RGB_matrix[counter].R) | 0xFF000000)
+		);
+
+		*(__IO uint32_t *)(LCD_FRAME_BUFFER + (counter * 4) + (IMAGE_WIDTH * (IMAGE_HEIGHT - line_counter - 1) * 4)) = ARGB32Buffer[counter];
+	}  
+
+#ifdef SWAP_RB 
+	uint32_t pixel = 0, width_counter, result = 0, result1 = 0;
+  
+	for (width_counter = 0; width_counter < IMAGE_WIDTH; width_counter++)
+	{
+		pixel = *(__IO uint32_t *)(LCD_FRAME_BUFFER + (width_counter * 4) + (IMAGE_WIDTH * (IMAGE_HEIGHT - line_counter - 1) * 4)); 
+		result1 = (((pixel & 0x00FF0000) >> 16) | ((pixel & 0x000000FF) << 16));
+		pixel = pixel & 0xFF00FF00;
+		result = (result1 | pixel);
+		*(__IO uint32_t *)(LCD_FRAME_BUFFER + (width_counter * 4) + (IMAGE_WIDTH * (IMAGE_HEIGHT - line_counter - 1) * 4)) = result;
+     
+	}  
+#endif
+
+	line_counter--;
+	return 0;
+}
   /* USER CODE END 3 */
 
 

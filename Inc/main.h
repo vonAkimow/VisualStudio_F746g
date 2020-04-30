@@ -55,7 +55,21 @@ typedef enum
   RIGHT_MODE = 0x02, /* Right mode */
   LEFT_MODE = 0x03 /* Left mode */
 }Text_AlignModeTypdef;
+	
+	
+typedef struct RGB
+{
+		uint8_t B;
+		uint8_t G;
+		uint8_t R;
+}RGB_typedef;
 
+	/* Exported variables --------------------------------------------------------*/
+	/* Exported constants --------------------------------------------------------*/
+#define IMAGE_HEIGHT 272
+#define IMAGE_WIDTH  480
+#define IMAGE_QUALITY 90
+#define LCD_FRAME_BUFFER 0xC0000000
 	
 	
 	
